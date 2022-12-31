@@ -150,3 +150,5 @@ We multiply the old state by ft, forgetting the things we decided to forget earl
     * https://kikaben.com/long-short-term-memory/
     * https://weberna.github.io/blog/2017/11/15/LSTM-Vanishing-Gradients.html
 
+# ELMO(Embeddings from Language Models) 
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im20.gif) <br/>
