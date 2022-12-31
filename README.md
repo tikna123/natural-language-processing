@@ -40,3 +40,21 @@ It contains details about the different topics in Natural language Processing.
     * https://www.capitalone.com/tech/machine-learning/understanding-tf-idf/
 
 # Conditional Random Field
+* Conditional Random Fields are a discriminative model, used for predicting sequences. They use contextual information from previous labels, thus increasing the amount of information the model has to make a good prediction.
+* Part of speech tagging:
+    * Let’s go into some more detail, using the more common example of part-of-speech tagging. In POS tagging, the goal is to label a sentence (a sequence of words or tokens) with tags like ADJECTIVE, NOUN, PREPOSITION, VERB, ADVERB, ARTICLE. For example, given the sentence “Bob drank coffee at Starbucks”, the labeling might be “Bob (NOUN) drank (VERB) coffee (NOUN) at (PREPOSITION) Starbucks (NOUN)”. So let’s build a conditional random field to label sentences with their parts of speech. Just like any classifier, we’ll first need to decide on a set of feature functions fi.
+    * ***Feature Functions in a CRF***
+        * In a CRF, each feature function is a function that takes in as input:
+            * a sentence s
+            * the position i of a word in the sentence
+            * the label li of the current word
+            * the label li−1 of the previous word
+        and outputs a real-valued number (though the numbers are often just either 0 or 1).
+        Note: by restricting our features to depend on only the current and previous labels, rather than arbitrary labels throughout the sentence, I’m actually building the special case of a linear-chain CRF. 
+    * ***Features to Probabilities***
+        * Next, assign each feature function fj a weight λj (I’ll talk below about how to learn these weights from the data). Given a sentence s, we can now score a labeling l of s by adding up the weighted features over all words in the sentence:
+    ![](https://github.com/tikna123/machine-learning-concepts/blob/main/images/im1.png) <br/>
+    ![](https://github.com/tikna123/machine-learning-concepts/blob/main/images/im2.png) <br/>
+    ![](https://github.com/tikna123/machine-learning-concepts/blob/main/images/im3.png) <br/>
+    ![](https://github.com/tikna123/machine-learning-concepts/blob/main/images/im4.png) <br/>
+    ![](https://github.com/tikna123/machine-learning-concepts/blob/main/images/im5.png) <br/>
