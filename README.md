@@ -53,8 +53,8 @@ It contains details about the different topics in Natural language Processing.
         Note: by restricting our features to depend on only the current and previous labels, rather than arbitrary labels throughout the sentence, I’m actually building the special case of a linear-chain CRF. 
     * ***Features to Probabilities***
         * Next, assign each feature function fj a weight λj (I’ll talk below about how to learn these weights from the data). Given a sentence s, we can now score a labeling l of s by adding up the weighted features over all words in the sentence:
-    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im1.PNG) <br/>
-    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im2.PNG) <br/>
-    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im3.PNG) <br/>
-    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im4.PNG) <br/>
-    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im5.PNG) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im1.PNG) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im2.PNG) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im3.PNG) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im4.PNG) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im5.PNG) <br/>
