@@ -151,4 +151,23 @@ We multiply the old state by ft, forgetting the things we decided to forget earl
     * https://weberna.github.io/blog/2017/11/15/LSTM-Vanishing-Gradients.html
 
 # ELMO(Embeddings from Language Models) 
+ELMO achieves state-of-the-art performance on many popular tasks including question-answering, sentiment analysis, and named-entity extraction
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im20.gif) <br/>
+ELMo word vectors are computed on top of a two-layer bidirectional language model (biLM). This biLM model has two layers stacked together. Each layer has 2 passes — forward pass and backward pass. 
+* The architecture above uses a character-level convolutional neural network (CNN) to represent words of a text string into raw word vectors
+* These raw word vectors act as inputs to the first layer of biLM
+* The forward pass contains information about a certain word and the context (other words) before that word
+* The backward pass contains information about the word and the context after it
+* This pair of information, from the forward and backward pass, forms the intermediate word vectors
+* These intermediate word vectors are fed into the next layer of biLM
+* The final representation (ELMo) is the weighted sum of the raw word vectors and the 2 intermediate word vectors
+As the input to the biLM is computed from characters rather than words, it captures the inner structure of the word. For example, the biLM will be able to figure out that terms like beauty and beautiful are related at some level without even looking at the context they often appear in. Sounds incredible!
+Unlike traditional word embeddings such as word2vec and GLoVe, the ELMo vector assigned to a token or word is actually a function of the entire sentence containing that word. Therefore, the same word can have different word vectors under different contexts.
+* ***Elmo is open source***
+    * It's code and datasets are open source. It has a website which includes not only basic information about it, but also download links for the small, medium, and original versions of the model. People looking to use ELMo should definitely check out this website to get a quick copy of the model. Moreover, the code is published on GitHub and includes a pretty-extensive README that lets users know how to use ELMo. I’d be surprised if it took anyone more than a few hours to get a working ELMo model going.
+    * ***Code***: https://github.com/allenai/allennlp
+    * ***Website***: https://allenai.org/allennlp/software/elmo
+* References
+    * https://www.analyticsvidhya.com/blog/2019/03/learn-to-use-elmo-to-extract-features-from-text/
+    * https://arxiv.org/pdf/1802.05365.pdf (paper)
+    * https://towardsdatascience.com/elmo-why-its-one-of-the-biggest-advancements-in-nlp-7911161d44be
