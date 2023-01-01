@@ -185,4 +185,31 @@ The input representation for the word ‘Washington’ is been considered based 
 You can see that for the word ‘Washington’ the red mark is the forward LSTM output and the blue mark is the backward LSTM output. Both forward and backward contexts are concatenated to obtain the input representation of the word ‘Washington’.
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im22.png) <br/>
 After getting the input representation it is fed to the forward and backward LSTM to get the particular task that you are dealing with. In the diagram mentioned we are trying to get the NER.
-
+* References:
+    * https://github.com/flairNLP/flair
+    * https://www.analyticsvidhya.com/blog/2019/02/flair-nlp-library-python/
+    * https://www.section.io/engineering-education/how-to-create-nlp-application-with-flair/
+# ULMFit
+* Universal Language Model FIne-Tuning(ULMFIT) is a transfer learning technique which can help in various NLP tasks. It has been state-of-the-art NLP technique for a long time, but then it was dethroned by BERT[which recently got dethroned by XLNet in text classification]
+* Deep learning requires a lot of dataset. Specifically when doing transfer learning, we have a large dataset on which our base model is build and we transfer learn the parameters of the neural network to our domain specific dataset. When we have a smaller domain specific dataset, the models overfit. To solve this problem, Jeremy Howard and Sebastian Ruder suggest 3 different techniques in there paper on Universal Language Model Fine-tuning for Text Classification for fine-tuning in transfer learning LMs for NLP specific tasks
+    * ***Discriminative fine-tuning***
+        * Discriminative fine-tuning means using a larger learning rate for the last layer and decrease the learning rate for each layer, consecutively until the first.
+        * For example: use lr=0.01 for the last (most specific) layer, lr=0.005  for the second-last, etc.
+    * ***Slanted triangular learning rates***
+        ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im24.png) <br/>
+        * Slanted Triangular Learning Rate is a learning rate schedule; the maximum learning rate (last layer) grows linearly until it maxes out and then starts to be lowered
+    * ***Gradual unfreezing***
+        * Refers to unfreezing one layer per epoch, starting at the last (most specific) layer. Then, for each new epoch, one extra layer is added to the set of unfrozen layers, and these get to be fine-tuned in that epoch.
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im23.png) <br/>
+* There are 3 steps in ULMFit
+    1. ***General-domain LM pretraining(Unsupervised)***: The LM is trained on a general-domain corpus to capture general features of the language in different layers.
+    2. ***Target task LM fine-tunning(Unsupervised)***: Now that the model has captured the general features of the language. To make it useful for our domain-specific use case, we can fine-tune the paraments of LM using target task data. The distribution of the vocabulary in our data may differ from the pre-trained model. This process is a semi-supervised learning task. 
+        * This step uses discriminative fine-tuning and slanted triangular learning rates. 
+    3. ***Target task classifier fine-tuning***: In this step, the classifier is fine-tuned on the target task using the same architecture with two additional linear blocks. This is a supervised learning task. The parameters in these task-specific classifier layers are the only ones that can be learned from scratch. For this reason, the Author concatenates the last hidden state with both the max-pooled and the mean-pooled representation of the hidden states.
+        * This step uses discriminative fine-tuning, slanted triangular learning rates and gradual unfreezing of classifier layers
+* References:
+    * https://queirozf.com/entries/paper-summary-ulmfit-universal-language-model-fine-tuning-for-text-classification
+    * https://nlp.fast.ai/classification/2018/05/15/introducing-ulmfit.html
+    * https://arxiv.org/abs/1801.06146v5 (paper)
+    * https://towardsdatascience.com/understanding-language-modelling-nlp-part-1-ulmfit-b557a63a672b
+    * https://medium.com/@j.13mehul/simplified-details-of-ulmfit-452c49294fb8
