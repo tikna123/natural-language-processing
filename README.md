@@ -172,3 +172,17 @@ Unlike traditional word embeddings such as word2vec and GLoVe, the ELMo vector a
     * https://www.analyticsvidhya.com/blog/2019/03/learn-to-use-elmo-to-extract-features-from-text/
     * https://arxiv.org/pdf/1802.05365.pdf (paper)
     * https://towardsdatascience.com/elmo-why-its-one-of-the-biggest-advancements-in-nlp-7911161d44be
+
+# FLAIR
+FLAIR library provides powerful state-of-the-art contextual word embeddings. It provides following features:
+* Flair supports a number of word embeddings used to perform NLP tasks such as FastText, ELMo, GloVe, BERT and its variants, XLM, and Byte Pair Embeddings including Flair Embedding.
+* The Flair Embedding is based on the concept of contextual string embeddings which is used for Sequence Labelling.
+* Using Flair you can also combine different word embeddings together to get better results.
+Flair supports a number of languages.
+In this word embedding each of the letters in the words are sent to the Character Language Model and then the input representation is taken out from the forward and backward LSTMs.
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im21.png) <br/>
+The input representation for the word ‘Washington’ is been considered based on the context before the word ‘Washington’. The first and last character states of each word is taken in order to generate the word embeddings.
+You can see that for the word ‘Washington’ the red mark is the forward LSTM output and the blue mark is the backward LSTM output. Both forward and backward contexts are concatenated to obtain the input representation of the word ‘Washington’.
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im22.png) <br/>
+After getting the input representation it is fed to the forward and backward LSTM to get the particular task that you are dealing with. In the diagram mentioned we are trying to get the NER.
+
