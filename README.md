@@ -253,13 +253,13 @@ After getting the input representation it is fed to the forward and backward LST
 We will discuss each component in the architecture:
 - ***Self Attention***:
   - Steps:
-    1. The word embedding is transformed into three separate matrices — queries, keys, and values — via multiplication of the word embedding against three matrices with learned weights. These vectors are trained and updated during the training process.
-    2. Consider this sentence- “transformers are great”. To calculate the self-awareness of the first word "transformers”, calculate the scores of all the words in the phrase related to transformers”. This score determines the importance of other words when encoding a particular word in the input sequence.
-     - The score for the first word is calculated by taking the dot product of the Query vector (q1) with the keys vectors (k1, k2, k3) of all the words
-     - Then, these scores are divided by 8 which is the square root of the dimension of the key vector:
-     - Next, these scores are normalized using the softmax activation function
-     - These normalized scores are then multiplied by the value vectors (v1, v2, v3) and sum up the resultant vectors to arrive at the final vector (z1). This is the output of the self-attention layer. It is then passed on to the feed-forward network as input
-     - Same process is done for all the words
+    - The word embedding is transformed into three separate matrices — queries, keys, and values — via multiplication of the word embedding against three matrices with learned weights. These vectors are trained and updated during the training process.
+    - Consider this sentence- “transformers are great”. To calculate the self-awareness of the first word "transformers”, calculate the scores of all the words in the phrase related to transformers”. This score determines the importance of other words when encoding a particular word in the input sequence.
+      - The score for the first word is calculated by taking the dot product of the Query vector (q1) with the keys vectors (k1, k2, k3) of all the words
+      - Then, these scores are divided by 8 which is the square root of the dimension of the key vector:
+      - Next, these scores are normalized using the softmax activation function
+      - These normalized scores are then multiplied by the value vectors (v1, v2, v3) and sum up the resultant vectors to arrive at the final vector (z1). This is the output of the self-attention layer. It is then passed on to the feed-forward network as input
+      - Same process is done for all the words
   In the Transformer architecture, self-awareness is calculated independently of each other, not just once, but multiple times in parallel. Therefore, it is called multi-head attention. The outputs are concatenated and transformed linearly, as shown in the following figure.
   ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im32.png) <br/>
 
