@@ -189,7 +189,7 @@ After getting the input representation it is fed to the forward and backward LST
     * https://github.com/flairNLP/flair
     * https://www.analyticsvidhya.com/blog/2019/02/flair-nlp-library-python/
     * https://www.section.io/engineering-education/how-to-create-nlp-application-with-flair/
-# ULMFit
+# ULMFit(Transfer learning)
 * Universal Language Model FIne-Tuning(ULMFIT) is a transfer learning technique which can help in various NLP tasks. It has been state-of-the-art NLP technique for a long time, but then it was dethroned by BERT[which recently got dethroned by XLNet in text classification]
 * Deep learning requires a lot of dataset. Specifically when doing transfer learning, we have a large dataset on which our base model is build and we transfer learn the parameters of the neural network to our domain specific dataset. When we have a smaller domain specific dataset, the models overfit. To solve this problem, Jeremy Howard and Sebastian Ruder suggest 3 different techniques in there paper on Universal Language Model Fine-tuning for Text Classification for fine-tuning in transfer learning LMs for NLP specific tasks
     * ***Discriminative fine-tuning***
@@ -213,3 +213,27 @@ After getting the input representation it is fed to the forward and backward LST
     * https://arxiv.org/abs/1801.06146v5 (paper)
     * https://towardsdatascience.com/understanding-language-modelling-nlp-part-1-ulmfit-b557a63a672b
     * https://medium.com/@j.13mehul/simplified-details-of-ulmfit-452c49294fb8
+
+# Attention
+* ***Problems with RNN/LSTM*** 
+    * In Encoder-docoder model, the encoder LSTM is used to process the entire input sentence and encode it into a context vector, which is the last hidden state of the LSTM/RNN. This is expected to be a good summary of the input sentence. All the intermediate states of the encoder are ignored, and the final state id supposed to be the initial hidden state of the decoder
+    * The decoder LSTM or RNN units produce the words in a sentence one after another
+    * RNNs cannot remember longer sentences and sequences due to the vanishing/exploding gradient problem. LSTM tries to solve vanishing gradient but still it's not able to solve completely. Although an LSTM is supposed to capture the long-range dependency better than the RNN, it tends to become forgetful in specific cases. Another problem is that there is no way to give more importance to some of the input words compared to others while translating the sentence. 
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im24.png) <br/>
+* ***Attention mechanism***
+    * Attention mechanism tries to overcome the information bottleneck of the intermediary state by allowing the decoder model to access all the hidden states, rather than a single vector — aka intermediary state — build out of the encoder’s last hidden state, while predicting each output.
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im25.png) <br/>
+    The input to a cell in decoder now gets the following values:
+    * The previous hidden state of the decoder model Hₖ-₁.
+    * The previous output of decoder model Yₖ-₁.
+    * A context vector Cₖ— a weighted sum of all encoder hidden states(hⱼ’s) aka annotations.
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im26.png) <br/>
+    The context vector or intermediate vector ci for the output word yi is generated using the weighted sum of the annotations:
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im27.png) <br/>
+    The weights αij are computed by a softmax function given by the following equation:
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im28.png) <br/>
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im29.png) <br/>
+    eij is the output score of a feedforward neural network described by the function a that attempts to capture the alignment between input at j and output at i.
+    * The global alignment weights are important because they tell us which annotations(s) to focus on for the next output. The weights will and should vary in each time steps of the decoder model. They are calculated by using a feed forward neural network.
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im30.png) <br/>
+    While predicting the next step, weights are high — shown in white — only for a few words at a time. No more than 3–4 words have high attention for a given output word.
