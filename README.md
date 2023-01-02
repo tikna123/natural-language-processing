@@ -15,6 +15,7 @@ It contains details about the different topics in Natural language Processing.
 * Attention
 * Transformer
 * BERT
+* BERT limitations
 * ALBERT
 * DistillBERT
 * ROBERTA
@@ -316,6 +317,28 @@ The input to the encoder for BERT is a sequence of tokens, which are first conve
 * ***Task Specific Models***: The BERT paper shows a number of ways to use BERT for different tasks.
    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im39.png) <br/> 
 We can use also use BERT for feature extraction just like ELMO.   
+* References:
+    * https://jalammar.github.io/illustrated-bert/
+    * https://medium.com/@samia.khalid/bert-explained-a-complete-guide-with-theory-and-tutorial-3ac9ebc8fa7c
+    * https://www.kaggle.com/code/abhinand05/bert-for-humans-tutorial-baseline
+    * https://huggingface.co/blog/bert-101
 
-  
- 
+# BERT limitations
+* It struggles to handle negation
+* It is very compute intensive while training and inferencing because of many parameters.
+* 
+
+# ALBERT(A lite BERT)
+The main motivation behind ALBERT was to improve the training(training time) and results of BERT architecture by using different techniques such as factorization of embedding matrix, parameter sharing, and Inter sentence Coherence loss.
+  1. ***Cross-layer Parameter sharing***: There are multiple ways to share parameters(in transformer network), e.g., only sharing FFN parameters across layers, or only sharing attention parameters. The default decision for ALBERT is to share all parameters across layers. So, we can say that ALBERT have one encoder layer with different weight and apply that layer 12 times on the input. As a result, the large ALBERT model has about 18x fewer parameters compared to BERT-large. 
+  2. ***Embedding Factorization*** : In BERT, as well as later modelling advancements like XLNet and RoBERTa, the WordPiece embedding size E and the hidden layer size H are tied together, i.e., E ≡ H, which is sub-optimal. If E=H, then increasing H increases the size of the embedding matrix, which has size V×E.
+  From a modeling perspective, WordPiece embeddings are meant to learn context-independent representations, whereas hidden-layer embeddings are meant to learn context-dependent representations.
+    - A more efficient usage is to have H≫E.
+    - A factorization of the embedding parameters is proposed in ALBERT, decomposing them into two smaller matrices.
+    - By using this decomposition, the embedding parameters are reduced from O(V×H) to O(V×E+E×H). This parameter reduction is significant when H≫E.
+  3. ***Inter-Sentence Coherence Loss***: BERT uses NSP loss, later many studies found that NSP’s impact is unreliable and decided to eliminate it. NSP’s ineffectiveness is its lack of difficulty as a task, as compared to MLM. In ALBERT, sentence-order prediction (SOP) is used which only looks for sentence coherence and avoids topic prediction. The SOP loss uses positive examples (two consecutive segments from the same document) and negative examples (the same two consecutive segments but with their order swapped). This forces the model to pick up minute nuances about discourse-level coherence properties.  
+  * References:
+    - https://sh-tsang.medium.com/review-albert-a-lite-bert-for-self-supervised-learning-of-language-representations-14e1fcc05ba9
+    - https://iq.opengenus.org/albert-nlp/
+    - https://www.analyticsvidhya.com/blog/2022/10/albert-model-for-self-supervised-learning/
+    - https://arxiv.org/pdf/1909.11942.pdf(paper)
