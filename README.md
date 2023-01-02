@@ -261,16 +261,61 @@ We will discuss each component in the architecture:
       - Next, these scores are normalized using the softmax activation function
       - These normalized scores are then multiplied by the value vectors (v1, v2, v3) and sum up the resultant vectors to arrive at the final vector (z1). This is the output of the self-attention layer. It is then passed on to the feed-forward network as input
       - Same process is done for all the words
-    - ***Self Attention in decoder***: In the decoder part, the self attention is mostly same as in encoder except the scope is limited to the words that occur before a given word. This prevents any information leaks during the training of the model. This is done by masking the words that occur after it for each step. So for step 1, only the first word of the output sequence is NOT masked, for step 2, the first two words are NOT masked and so on.
+    - ***Self Attention in Decoder***: In the decoder part, the self attention is mostly same as in encoder except the scope is limited to the words that occur before a given word. This prevents any information leaks during the training of the model. This is done by masking the words that occur after it for each step. So for step 1, only the first word of the output sequence is NOT masked, for step 2, the first two words are NOT masked and so on.
     In the Transformer architecture, self-awareness is calculated independently of each other, not just once, but multiple times in parallel. Therefore, it is called multi-head attention. The outputs are concatenated and transformed linearly, as shown in the following figure.
     ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im32.png) <br/>
   - ***Encoder-Decoder Attention***: There is an attention layer between encoder and decoder that helps the decoder focus on relevant parts of the input sentence(similary to what attention does in seq2seq models). The “Encoder-Decoder Attention” layer works just like multiheaded self-attention, except it creates its Queries matrix from the layer below it, and takes the Keys and Values matrix from the output of the encoder stack.
   
   - ***Feedforward neural network(in encoder and decoder block)***: Each word is processed in the FNN separately. This allows parallelization. Each layer processes the input data and produces an output, which is then passed on to the next layer. Without normalization, the inputs to each layer can vary widely in scale, which can make it difficult for the model to learn effectively. Layer normalization addresses this issue by normalizing the inputs to each layer across the feature dimensions. This helps to stabilize the learning process and improve the model's ability to generalize to new data.
-  - *** Residual connection & Layer Normalization***: Residual connections mainly help mitigate the vanishing gradient problem. Another effect of residual connections is that the information stays local in the Transformer layer stack. The self-attention mechanism allows an arbitrary information flow in the network and thus arbitrary permuting the input tokens. The residual connections, however, always "remind" the representation of what the original state was.Layer normalization helps in normalizing the inputs in each layer in the model. It helps to stabilize the learning process and improve the model's ability to generalize to new data. Each layer processes the input data and produces an output, which is then passed on to the next layer. Without normalization, the inputs to each layer can vary widely in scale, which can make it difficult for the model to learn effectively. Layer normalization addresses this issue by normalizing the inputs to each layer across the feature dimensions. This helps to stabilize the learning process and improve the model's ability to generalize to new data.
+  - ***Residual connection & Layer Normalization*** : Residual connections mainly help mitigate the vanishing gradient problem. Another effect of residual connections is that the information stays local in the Transformer layer stack. The self-attention mechanism allows an arbitrary information flow in the network and thus arbitrary permuting the input tokens. The residual connections, however, always "remind" the representation of what the original state was.Layer normalization helps in normalizing the inputs in each layer in the model. It helps to stabilize the learning process and improve the model's ability to generalize to new data. Each layer processes the input data and produces an output, which is then passed on to the next layer. Without normalization, the inputs to each layer can vary widely in scale, which can make it difficult for the model to learn effectively. Layer normalization addresses this issue by normalizing the inputs to each layer across the feature dimensions. This helps to stabilize the learning process and improve the model's ability to generalize to new data.
   - ***Positional Embeddings***: Positional Embeddings is added to the word input embeddings before passing to the transformer model to include the information about the position of the word. Positional embeddings follow a specific pattern that the model learns, which helps it determine the position of each word, or the distance between different words in the sequence. The intuition here is that adding these values to the embeddings provides meaningful distances between the embedding vectors once they’re projected into Q/K/V vectors and during dot-product attention.
   - ***Final layer and softmax layer(post-processing)***: The goal of the final layer(fully connected linear layer) is to convert the decoder output vector into a much larger vector(size of vocab) called a logit vector. The softmax layer then turns those scores into probabilities (all positive, all add up to 1.0). The cell with the highest probability is chosen, and the word associated with it is produced as the output for this time step.
   - ***Limitations of transformer***
     - Attention can only deal with fixed-length text strings. The text has to be split into a certain number of segments or chunks before being fed into the system as input
     - This chunking of text causes context fragmentation. For example, if a sentence is split from the middle, then a significant amount of context is lost. In other words, the text is split without respecting the sentence or any other semantic boundary
     - Transformer-XL tries to overcome some of the limitations in the original transformer model.
+* References:
+    - https://jalammar.github.io/illustrated-transformer/
+    - https://blog.knoldus.com/what-are-transformers-in-nlp-and-its-advantages/#:~:text=NLP's%20Transformer%20is%20a%20new,relies%20entirely%20on%20self%2Dattention.
+    - https://towardsdatascience.com/transformers-89034557de14
+    - https://www.analyticsvidhya.com/blog/2019/06/understanding-transformers-nlp-state-of-the-art-models/
+    - https://stats.stackexchange.com/questions/565196/why-are-residual-connections-needed-in-transformer-architectures#:~:text=The%20reason%20for%20having%20the,derivative%20of%20the%20activation%20function.
+
+# BERT
+- BERT, which stands for "Bidirectional Encoder Representations from Transformers," achieves a state-of-the-art performance on a wide range of natural language processing tasks, including language translation, question answering, and text classification. BERT is categorized as autoEncoder(AE) language. The AE language model aims to reconstruct the original data from corrupted input. The corrupted input means we use [MASK] to replace the original token into in the pre-train phase. It is a "bidirectional" model as it is able to consider the context of a word in both directions which allows it to better understand the nuances and relationships between words in a sentence
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im34.png) <br/>
+There are 2 steps in BERT:
+  1. Semi-supervised training on large amount of text data(books,wikipedia. etc)
+  2. Supervised training on domain specific task with a labelled data.
+We can also use pretrained BERT model(skip the first step) and finetuned on task specific dataset.
+* ***Architecture***
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im35.png) <br/>
+  - Since BERT’s goal is to generate a language representation model, it only needs the encoder part
+    - BERT-Base, Uncased: 12-layers, 768-hidden, 12-attention-heads, 110M parameters
+    - BERT-Large, Uncased: 24-layers, 1024-hidden, 16-attention-heads, 340M parameters
+    - BERT-Base, Cased: 12-layers, 768-hidden, 12-attention-heads , 110M parameters
+    - BERT-Large, Cased: 24-layers, 1024-hidden, 16-attention-heads, 340M parameters
+* ***Preprocessing of text***
+The input to the encoder for BERT is a sequence of tokens, which are first converted into vectors and then processed in the neural network. But before processing can start, BERT needs the input to be massaged and decorated with some extra metadata:
+  1. ***Token embeddings***: A [CLS] token is added to the input word tokens at the beginning of the first sentence and a [SEP] token is inserted at the end of each sentence.
+  2. ***Segment embeddings***: A marker indicating Sentence A or Sentence B is added to each token. This allows the encoder to distinguish between sentences.
+  3. ***Positional embeddings***: A positional embedding is added to each token to indicate its position in the sentence.
+  ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im36.png) <br/>
+  Essentially, the Transformer stacks a layer that maps sequences to sequences, so the output is also a sequence of vectors with a 1:1 correspondence between input and output tokens at the same index. 
+  * The first token [CLS] is used in classification tasks as an aggregate of the entire sequence representation. It is ignored in non-classification tasks.
+  * For single text sentence tasks, this [CLS] token is followed by the WordPiece tokens and the separator token – [SEP].
+  * For sentence pair tasks, the WordPiece tokens of the two sentences are separated by another [SEP] token. This input sequence also ends with the [SEP] token.
+  * ***Tokenization***: BERT uses WordPiece tokenization. The vocabulary is initialized with all the individual characters in the language, and then the most frequent/likely combinations of the existing words in the vocabulary are iteratively added.
+* ***Pretraining tasks***
+  The BERT model is pretrained on two tasks simultaneously:
+  1. ***Masked LM(MLM)***: Randomly mask out 15% of the words in the input - replacing them with a
+    [MASK] token - run the entire sequence through the BERT attention based encoder and then predict only the masked words, based on the context provided by the other non-masked words in the sequence. Beyond masking 15% of the input, BERT also mixes things a bit in order to improve how the model later fine-tunes. Sometimes it randomly replaces a word with another word and asks the model to predict the correct word in that position.
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im37.png) <br/>
+  2. ***Next Sentence Prediction(NSP)***: In order to understand relationship between two sentences, BERT training process also uses next sentence prediction. A pre-trained model with this kind of    understanding is relevant for tasks like question answering. During training the model gets as input pairs of sentences and it learns to predict if the second sentence is the next sentence in the original text as well.
+   ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im38.png) <br/>
+* ***Task Specific Models***: The BERT paper shows a number of ways to use BERT for different tasks.
+   ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im39.png) <br/> 
+We can use also use BERT for feature extraction just like ELMO.   
+
+  
+ 
