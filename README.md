@@ -16,6 +16,7 @@ It contains details about the different topics in Natural language Processing.
 * Transformer
 * BERT
 * ALBERT
+* DistillBERT
 * ROBERTA
 * Sentence BERT
 * XLNET
@@ -196,7 +197,6 @@ After getting the input representation it is fed to the forward and backward LST
         * Discriminative fine-tuning means using a larger learning rate for the last layer and decrease the learning rate for each layer, consecutively until the first.
         * For example: use lr=0.01 for the last (most specific) layer, lr=0.005  for the second-last, etc.
     * ***Slanted triangular learning rates***
-        ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im24.png) <br/>
         * Slanted Triangular Learning Rate is a learning rate schedule; the maximum learning rate (last layer) grows linearly until it maxes out and then starts to be lowered
     * ***Gradual unfreezing***
         * Refers to unfreezing one layer per epoch, starting at the last (most specific) layer. Then, for each new epoch, one extra layer is added to the set of unfrozen layers, and these get to be fine-tuned in that epoch.
@@ -237,3 +237,29 @@ After getting the input representation it is fed to the forward and backward LST
     * The global alignment weights are important because they tell us which annotations(s) to focus on for the next output. The weights will and should vary in each time steps of the decoder model. They are calculated by using a feed forward neural network.
     ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im30.png) <br/>
     While predicting the next step, weights are high — shown in white — only for a few words at a time. No more than 3–4 words have high attention for a given output word.
+    * References:
+        * https://medium.com/analytics-vidhya/https-medium-com-understanding-attention-mechanism-natural-language-processing-9744ab6aed6a
+        * https://www.analyticsvidhya.com/blog/2019/11/comprehensive-guide-attention-mechanism-deep-learning/
+        * https://slds-lmu.github.io/seminar_nlp_ss20/attention-and-self-attention-for-nlp.html
+        * https://towardsdatascience.com/attaining-attention-in-deep-learning-a712f93bdb1e
+
+# Transformer
+* Transformers are a type of neural network architecture that have revolutionized the field of natural language processing (NLP) in recent years. They were introduced in a 2017 paper by Vaswani et al. called "Attention is All You Need," which demonstrated their effectiveness in a variety of tasks such as machine translation and language modeling.
+* Self-attention mechanism is introduced, which allow the model to consider the entire input sequence when making predictions, rather than just the previous few tokens as in traditional RNNs (recurrent neural networks). This makes transformers particularly well-suited for tasks that require understanding long-range dependencies, such as translation and summarization.
+* Another advantage of transformers is their parallelizability. Unlike RNNs, which must be processed sequentially, the self-attention mechanisms in transformers allow the model to simultaneously attend to all the input tokens, making it possible to parallelize the computation across multiple devices. The feedforward layer computations can also be parallelized because each word is processed separately in the FNN layers. This has made it possible to train very large transformer models, such as BERT and GPT-3, which have achieved state-of-the-art results on a wide range of NLP tasks.
+* Another key innovation of the transformer architecture is the use of multi-headed attention. This allows the model to attend to multiple input subspaces at the same time, which can be useful for capturing complex relationships betweed words in the sentence.
+* ***Architecture***
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im31.png) <br/>
+We will discuss each component in the architecture:
+- ***Self Attention***:
+  - Steps:
+    1. The word embedding is transformed into three separate matrices — queries, keys, and values — via multiplication of the word embedding against three matrices with learned weights. These vectors are trained and updated during the training process.
+    2. Consider this sentence- “transformers are great”. To calculate the self-awareness of the first word "transformers”, calculate the scores of all the words in the phrase related to transformers”. This score determines the importance of other words when encoding a particular word in the input sequence.
+     - The score for the first word is calculated by taking the dot product of the Query vector (q1) with the keys vectors (k1, k2, k3) of all the words
+     - Then, these scores are divided by 8 which is the square root of the dimension of the key vector:
+     - Next, these scores are normalized using the softmax activation function
+     - These normalized scores are then multiplied by the value vectors (v1, v2, v3) and sum up the resultant vectors to arrive at the final vector (z1). This is the output of the self-attention layer. It is then passed on to the feed-forward network as input
+     - Same process is done for all the words
+  In the Transformer architecture, self-awareness is calculated independently of each other, not just once, but multiple times in parallel. Therefore, it is called multi-head attention. The outputs are concatenated and transformed linearly, as shown in the following figure.
+  ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im32.png) <br/>
+
