@@ -251,8 +251,9 @@ After getting the input representation it is fed to the forward and backward LST
 * ***Architecture***
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im31.png) <br/>
 We will discuss each component in the architecture:
-  - ***Self Attention(in encoder and decoder)***:
+  - ***Self Attention***:
     - Steps:
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im33.png) <br/>
       - The word embedding is transformed into three separate matrices — queries, keys, and values — via multiplication of the word embedding against three matrices with learned weights. These vectors are trained and updated during the training process.
       - Consider this sentence- “transformers are great”. To calculate the self-awareness of the first word "transformers”, calculate the scores of all the words in the phrase related to transformers”. This score determines the importance of other words when encoding a particular word in the input sequence.
       - The score for the first word is calculated by taking the dot product of the Query vector (q1) with the keys vectors (k1, k2, k3) of all the words
@@ -260,10 +261,9 @@ We will discuss each component in the architecture:
       - Next, these scores are normalized using the softmax activation function
       - These normalized scores are then multiplied by the value vectors (v1, v2, v3) and sum up the resultant vectors to arrive at the final vector (z1). This is the output of the self-attention layer. It is then passed on to the feed-forward network as input
       - Same process is done for all the words
-    - Self Attention in decoder: In the decoder part, the scope of self attention is limited to the words that occur before a given word. This prevents any information leaks during the training of the model. This is done by masking the words that occur after it for each step. So for step 1, only the first word of the output sequence is NOT masked, for step 2, the first two words are NOT masked and so on.
+    - ***Self Attention in decoder***: In the decoder part, the self attention is mostly same as in encoder except the scope is limited to the words that occur before a given word. This prevents any information leaks during the training of the model. This is done by masking the words that occur after it for each step. So for step 1, only the first word of the output sequence is NOT masked, for step 2, the first two words are NOT masked and so on.
     In the Transformer architecture, self-awareness is calculated independently of each other, not just once, but multiple times in parallel. Therefore, it is called multi-head attention. The outputs are concatenated and transformed linearly, as shown in the following figure.
     ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im32.png) <br/>
-    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im33.png) <br/>
   - ***Encoder-Decoder Attention***: There is an attention layer between encoder and decoder that helps the decoder focus on relevant parts of the input sentence(similary to what attention does in seq2seq models). The “Encoder-Decoder Attention” layer works just like multiheaded self-attention, except it creates its Queries matrix from the layer below it, and takes the Keys and Values matrix from the output of the encoder stack.
   
   - ***Feedforward neural network(in encoder and decoder block)***: Each word is processed in the FNN separately. This allows parallelization. Each layer processes the input data and produces an output, which is then passed on to the next layer. Without normalization, the inputs to each layer can vary widely in scale, which can make it difficult for the model to learn effectively. Layer normalization addresses this issue by normalizing the inputs to each layer across the feature dimensions. This helps to stabilize the learning process and improve the model's ability to generalize to new data.
