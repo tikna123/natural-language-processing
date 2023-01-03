@@ -17,7 +17,7 @@ It contains details about the different topics in Natural language Processing.
 * BERT
 * BERT limitations
 * ALBERT
-* DistillBERT
+* DistilBERT
 * ROBERTA
 * Sentence BERT
 * XLNET
@@ -342,3 +342,13 @@ The main motivation behind ALBERT was to improve the training(training time) and
     - https://iq.opengenus.org/albert-nlp/
     - https://www.analyticsvidhya.com/blog/2022/10/albert-model-for-self-supervised-learning/
     - https://arxiv.org/pdf/1909.11942.pdf(paper)
+
+# DistilBERT
+  DistillBERT is a smaller, faster, and lighter version of BERT which is designed to be more resource-efficient, easier to train and faster inference than BERT, while still maintaining a high level of performance. Knowledge distillation is leveraged during the pre-training phase and it has 40% fewer parameters than BERT, while retaining 97% of its language understanding capabilities and being 60% faster and more efficient to run and deploy in a production environment
+  - ***Knowledge distillation and training loss***: In the teacher-student training, we train a student network to mimic the full output distribution of the teacher network (its knowledge). Rather than training with a cross-entropy over the hard targets (one-hot encoding of the gold class), we transfer the knowledge from the teacher to the student with a cross-entropy over the soft targets (probabilities of the teacher). 
+  ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im40.png) <br/>
+  This loss is a richer training signal since a single example enforces much more constraint than a single hard target. It is also call distillation loss(L_ce).
+  The final training objective is a linear combination of the distillation loss L_ce with the supervised training loss, in our case the masked language modeling loss L_mlm. We found it beneficial to add a cosine embedding loss (Lcos) which will tend to align the directions of the student and teacher hidden states vectors.
+  - ***Student architecture and Initialization***: It has the same general architecture as BERT. The token-type embeddings and the pooler are removed while the number of layers is reduced by a factor of 2. Most of the operations used in the Transformer architecture (linear layer and layer normalisation) are highly optimized in modern linear algebra frameworks and our investigations showed that variations on the last dimension of the tensor (hidden size dimension) have a smaller impact on computation efficiency (for a fixed parameters budget) than variations on other factors like the number of layers. Thus Number of layers are reduced in the architecture.
+  Student architecture is initialized from original BERT architecture by taking one layer out of two.
+  - ***Pretraining***: It is trained on very large batches leveraging gradient accumulation(upto 4K examples  perbatch) using dynamic masking and without the next sentence prediction objective. The same corpus as the original BERT model is used for the training.
