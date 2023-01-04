@@ -63,10 +63,10 @@ It contains details about the different topics in Natural language Processing.
 
     * ***Example Feature Functions***
     So what do these feature functions look like? Examples of POS tagging features could include:
-      - $$f1(s,i,l_i,l_{i−1})=1$$  if l_i= ADVERB and the ith word ends in “-ly”; 0 otherwise. ** If the weight λ1 associated with this feature is large and positive, then this feature is essentially saying that we prefer labelings where words ending in -ly get labeled as ADVERB.
-      - $$f2(s,i,l_i,l_{i−1})=1$$  if i=1, l_i= VERB, and the sentence ends in a question mark; 0 otherwise. ** Again, if the weight λ2 associated with this feature is large and positive, then labelings that assign VERB to the first word in a question (e.g., “Is this a sentence beginning with a verb?”) are preferred.
-      - $$f3(s,i,l_i,l_{i−1})=1$$  if l_{i−1}= ADJECTIVE and l_i= NOUN; 0 otherwise. ** Again, a positive weight for this feature means that adjectives tend to be followed by nouns.
-      - $$f4(s,i,l_i,l_{i−1})=1$$  if l_{i−1}= PREPOSITION and l_i= PREPOSITION. ** A negative weight λ4 for this function would mean that prepositions don’t tend to follow prepositions, so we should avoid labelings where this happens.
+      - $$f1(s,i,l_i,l_{i−1})=1$$  if li= ADVERB and the ith word ends in “-ly”; 0 otherwise. ** If the weight λ1 associated with this feature is large and positive, then this feature is essentially saying that we prefer labelings where words ending in -ly get labeled as ADVERB.
+      - $$f2(s,i,l_i,l_{i−1})=1$$  if i=1, li= VERB, and the sentence ends in a question mark; 0 otherwise. ** Again, if the weight λ2 associated with this feature is large and positive, then labelings that assign VERB to the first word in a question (e.g., “Is this a sentence beginning with a verb?”) are preferred.
+      - $$f3(s,i,l_i,l_{i−1})=1$$  if li-1= ADJECTIVE and li= NOUN; 0 otherwise. ** Again, a positive weight for this feature means that adjectives tend to be followed by nouns.
+      - $$f4(s,i,l_i,l_{i−1})=1$$  if li−1= PREPOSITION and li= PREPOSITION. ** A negative weight λ4 for this function would mean that prepositions don’t tend to follow prepositions, so we should avoid labelings where this happens.
     And that’s it! To sum up: to build a conditional random field, you just define a bunch of feature functions (which can depend on the entire sentence, a current position, and nearby labels), assign them weights, and add them all together, transforming at the end to a probability if necessary.
 * References:
     * http://www.alias-i.com/lingpipe/demos/tutorial/crf/read-me.html
