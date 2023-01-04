@@ -20,7 +20,7 @@ It contains details about the different topics in Natural language Processing.
 * DistilBERT
 * ROBERTA
 * XLNET
-* Sentence BERT(SBERT)
+* Sentence-BERT(SBERT)
 
 # TF-IDF
 * TF-IDF (term frequency-inverse document frequency) is a statistical measure that evaluates how relevant a word is to a document in a collection of documents.
@@ -56,6 +56,7 @@ It contains details about the different topics in Natural language Processing.
         Note: by restricting our features to depend on only the current and previous labels, rather than arbitrary labels throughout the sentence, I’m actually building the special case of a linear-chain CRF. 
     * ***Features to Probabilities***
         * Next, assign each feature function fj a weight λj (I’ll talk below about how to learn these weights from the data). Given a sentence s, we can now score a labeling l of s by adding up the weighted features over all words in the sentence:
+        $$\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)$$
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im1.PNG) <br/>
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im2.PNG) <br/>
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im3.PNG) <br/>
