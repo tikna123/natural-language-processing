@@ -19,8 +19,8 @@ It contains details about the different topics in Natural language Processing.
 * ALBERT
 * DistilBERT
 * ROBERTA
-* Sentence BERT
 * XLNET
+* Sentence BERT(SBERT)
 
 # TF-IDF
 * TF-IDF (term frequency-inverse document frequency) is a statistical measure that evaluates how relevant a word is to a document in a collection of documents.
@@ -368,3 +368,26 @@ The main motivation behind ALBERT was to improve the training(training time) and
     - https://jesusleal.io/2020/10/20/RoBERTA-Text-Classification/
     - https://towardsdatascience.com/transformers-retraining-roberta-base-using-the-roberta-mlm-procedure-7422160d5764
     - https://arxiv.org/pdf/1907.11692.pdf(paper)
+
+# XLNET
+XLNet is a generalized autoregressive pretraining method which was created to address the shortcomings of the autoencoding method of pretraining used by BERT and other popular language models. XLnet is an extension of the Transformer-XL model. It uses permutative language modeling to create a bidirectional contexts. In Permutative language modeling(PLM) autoregressive model is trained on all possible permutation of words in a sentence. It integrates the idea of auto-regressive models and bi-directional context modeling, yet overcoming the disadvantages of BERT. It is currently the SOTA for text classification. XLNET includes following ideas to overcome the shortcomings in the BERT:
+- ***Permutation Language Modeling (PLM)***: PLM is the idea of capturing bidirectional context by training an autoregressive model on all possible permutation of words in a sentence. Instead of fixed left-right or right-left modeling, XLNET maximizes expected log likelihood over all possible permutations of the sequence. In expectation, each position learns to utilize contextual information from all positions thereby capturing bidirectional context. No [MASK] is needed and input data need not be corrupted.
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im41.png) <br/>
+The above diagram illustrates PLM. Let us consider that we are learning x3 (the token at the 3rd position in the sentence). PLM trains an autoregressive model with various permutations of the tokens in the sentence, so that in the end of all such permutations, we would have learnt x3, given all other words in the sentence. In the above illustration, we can see that the next layer takes as inputs only the tokens preceding x3 in the permutation sequence. This way, autoregression is also achieved.
+- ***Two Stream Self Attention***: 
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im42.png) <br/>
+It contains two kind of self-attention. One is the content stream attention, which is the standard self-attention in Transformer. Another is the query stream attention. XLNet introduces it to replace the [MASK] token in BERT. For example, if BERT wants to predict x3 with knowledge of the context words x1 and x2, it can use [MASK] to represent the x3 token. The [MASK] is just a placeholder. And the embedding of x1 and x2 contains the position information to help the model to “know” [MASK] is x3. 
+In XLNET, One token x3 will server two kinds of roles. When it is used as content to predict other tokens, we can use the content representation (learned by content stream attention) to represent x3. But if we want to predict x3, we should only know its position and not its content. That’s why XLNet uses query representation (learned by query stream attention) to preserve context information before x3 and only the position information of x3.
+In order to intuitively understand the Two-Stream Self-Attention, we can just think XLNet replace the [MASK] in BERT with query representation. They just choose different approaches to do the same thing.
+***Comparison between XLNET and BERT***: For example, consider the line “New York is a city” and that we need to predict “New York”. Let us assume that the current permutation is
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im43.png) <br/>
+BERT would predict the tokens 4 and 5 independent of each other. Whereas, XLNET, being an autoregressive model, predicts in the order of the sequence. i.e., first predicts token 4 and then predicts token 5. In this case, XLNET would compute
+log P(New | is a city) + log P(York | New, is a city)
+whereas BERT would reduce to
+log P(New | is a city) + log P(York | is a city)
+* References:
+    - https://medium.com/@av2845/xlnet-at-a-quick-glance-to-begin-with-f97b1834baaf
+    - https://analyticsindiamag.com/guide-to-xlnet-for-language-understanding/
+    - https://www.borealisai.com/research-blogs/understanding-xlnet/
+    - https://towardsdatascience.com/what-is-two-stream-self-attention-in-xlnet-ebfe013a0cf3
+    - https://arxiv.org/pdf/1906.08237.pdf(paper)
