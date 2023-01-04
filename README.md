@@ -394,3 +394,26 @@ log P(New | is a city) + log P(York | is a city)
     - https://www.borealisai.com/research-blogs/understanding-xlnet/
     - https://towardsdatascience.com/what-is-two-stream-self-attention-in-xlnet-ebfe013a0cf3
     - https://arxiv.org/pdf/1906.08237.pdf(paper)
+
+# Sentence BERT(SBERT)
+Sentence BERT is a modification of the standard pretrained BERT network that uses siamese and triplet networks to create sentence embeddings for each sentence that can then be compared using a cosine-similarity, making semantic search for a large number of sentences feasible (only requiring a few seconds of training time).
+***BERT for Sentence Similarity***: BERT uses a cross-encoder structure to calculate accurate sentence similarity. This meant that we would pass two sentences to BERT, add a classification head to the top of BERT — and use this to output a similarity score.
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im44.png) <br/>
+The above architecture produces very accurate similarity scores (better than SBERT), but it’s not scalable. If we wanted to perform a similarity search through a small 100K sentence dataset, we would need to complete the cross-encoder inference computation 100K times. <br/>
+Ideally, we need to pre-compute sentence vectors that can be stored and then used whenever required. If these vector representations are good, all we need to do is calculate the cosine similarity between each. <br/>
+With the original BERT (and other transformers), we can build a sentence embedding by averaging the values across all token embeddings output by BERT (if we input 512 tokens, we output 512 embeddings). Alternatively, we can use the output of the first [CLS] token (a BERT-specific token whose output embedding is used in classification tasks). Using one of these two approaches can give us sentence embeddings but the accuracy is not good and is worse than using averaged GLOVE algorithms. The solution is SBERT.
+***SBERT Model*** 
+***Model***: SBERT is similar to BERT except it drops the final classification head, and processes one sentence at a time. SBERT then uses mean pooling on the final output layer to produce a sentence embedding. Unlike BERT, SBERT is fine-tuned on sentence pairs using a siamese architecture ) to update the weights such that the produced sentence embeddings are semantically meaningful and can be compared with cosine-similarity. We can think of this as having two identical BERTs in parallel that share the exact same network weights(single model used multiple times).
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/sbert.png) <br/>
+***Dataset***: The Stanford Natural Language Inference (SNLI) dataset and the Multi-Genre NLI (MG-NLI) dataset is combined to create a collection of 1.000.000 sentence pairs. The training task posed by this dataset is to predict the label of each pair, which can be one of “contradiction”, “entailment” or “neutral”.
+***Objective functions***: In SBERT, multiple objective functions are tried:
+  1. ***Classification Objective Function***: We concatenate the sentence embeddings u and v with the element-wise difference |u−v| and multiply it with the trainable weight Wt of dim 3n× k. Cross entrophy loss is used as the objective function. The structure is given in figure 1.
+  ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im46.png) <br/>
+  2. ***Regression Objective Function***: The cosine similarity between the two sentence embeddings u and v is computed (Figure 2). We use mean squared-error loss as the objective function.
+  3. ***Triplet Objective Function***: Given an anchor sentence a, a positive sentence p, and a negative sentence n, triplet loss tunes the network such that the distance between a and p is smaller than the distance between a and n. Mathematically, we minimize the following loss function:
+            max(||s<sub>a</sub> − s<sub>p</sub>|| − ||s<sub>a</sub> − s<sub>n</sub>|| + ,0)
+* References:
+    - https://arxiv.org/pdf/1908.10084.pdf(paper)
+    - https://towardsdatascience.com/an-intuitive-explanation-of-sentence-bert-1984d144a868
+    - https://medium.com/dair-ai/tl-dr-sentencebert-8dec326daf4e
+    - https://www.pinecone.io/learn/sentence-embeddings/
