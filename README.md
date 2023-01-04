@@ -407,10 +407,10 @@ With the original BERT (and other transformers), we can build a sentence embeddi
 ***Dataset used***: The Stanford Natural Language Inference (SNLI) dataset and the Multi-Genre NLI (MG-NLI) dataset is combined to create a collection of 1.000.000 sentence pairs. The training task posed by this dataset is to predict the label of each pair, which can be one of “contradiction”, “entailment” or “neutral”. <br/> <br/>
 ***Objective functions***: In SBERT, multiple objective functions are tried:
   1. ***Classification Objective Function***: We concatenate the sentence embeddings u and v with the element-wise difference |u−v| and multiply it with the trainable weight Wt of dim 3n× k. Cross entrophy loss is used as the objective function. The structure is given in figure 1.
-  ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im46.png) <br/>
+  <br/>    O = softmax(W<sub>t</sub>(u,v,|u-v|))
   2. ***Regression Objective Function***: The cosine similarity between the two sentence embeddings u and v is computed (Figure 2). We use mean squared-error loss as the objective function.
   3. ***Triplet Objective Function***: Given an anchor sentence a, a positive sentence p, and a negative sentence n, triplet loss tunes the network such that the distance between a and p is smaller than the distance between a and n. Mathematically, we minimize the following loss function:
-            max(||s<sub>a</sub> − s<sub>p</sub>|| − ||s<sub>a</sub> − s<sub>n</sub>|| + ,0)
+      <br/>  max(||s<sub>a</sub> − s<sub>p</sub>|| − ||s<sub>a</sub> − s<sub>n</sub>|| + ,0)
 * References:
     - https://arxiv.org/pdf/1908.10084.pdf(paper)
     - https://towardsdatascience.com/an-intuitive-explanation-of-sentence-bert-1984d144a868
