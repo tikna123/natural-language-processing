@@ -57,7 +57,7 @@ It contains details about the different topics in Natural language Processing.
     * ***Features to Probabilities***
         * Next, assign each feature function fj a weight λj (I’ll talk below about how to learn these weights from the data). Given a sentence s, we can now score a labeling l of s by adding up the weighted features over all words in the sentence:
         $$\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)$$
-        score(l/s) = \sum_{j=1}^m \sum_{i=1}^n λ_jf_j(s,i,l_i,l_i-1)
+        score(l/s) =$$\sum_{j=1}^m \sum_{i=1}^n λ_jf_j(s,i,l_i,l_i-1)$$
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im1.PNG) <br/>
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im2.PNG) <br/>
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im3.PNG) <br/>
