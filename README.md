@@ -326,7 +326,10 @@ We can use also use BERT for feature extraction just like ELMO.
 # BERT limitations
 * It struggles to handle negation
 * It is very compute intensive while training and inferencing because of many parameters.
-* 
+* BERT corrupts the input with masks and suffers from pretrain-finetune discrepancy. In real life applications, we do not have inputs that are masked. 
+* It neglects the dependency between masked positions. For example, consider the sentence “New York is a city” and input to BERT to be “[MASK] [MASK] is a city”. The objective of BERT would be <br/>
+log p(New | is a city) + log p(York | is a city)
+From the above function, it is clear that there is no dependency between learning “New” and “York”. So, BERT can result in a prediction like “New Francisco is a city”.
 
 # ALBERT(A lite BERT)
 The main motivation behind ALBERT was to improve the training(training time) and results of BERT architecture by using different techniques such as factorization of embedding matrix, parameter sharing, and Inter sentence Coherence loss.
