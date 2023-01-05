@@ -254,7 +254,7 @@ After getting the input representation it is fed to the forward and backward LST
     ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im27.png) <br/>
     The weights αij are computed by a softmax function given by the following equation:
     ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im28.png) <br/>
-    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im29.png) <br/>
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/image29.png) <br/>
     eij is the output score of a feedforward neural network described by the function a that attempts to capture the alignment between input at j and output at i.
     * The global alignment weights are important because they tell us which annotations(s) to focus on for the next output. The weights will and should vary in each time steps of the decoder model. They are calculated by using a feed forward neural network.
     ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im30.png) <br/>
