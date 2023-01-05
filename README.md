@@ -61,13 +61,28 @@ It contains details about the different topics in Natural language Processing.
         Finally, we can transform these scores into probabilities p(l|s) between 0 and 1 by exponentiating and normalizing:
     ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im1.PNG) <br/>
 
-    * ***Example Feature Functions***
+    * ***Example Feature Functions*** <br/>
     So what do these feature functions look like? Examples of POS tagging features could include:
       - $$f1(s,i,l_i,l_{i−1})=1$$  if li= ADVERB and the ith word ends in “-ly”; 0 otherwise. ** If the weight λ1 associated with this feature is large and positive, then this feature is essentially saying that we prefer labelings where words ending in -ly get labeled as ADVERB.
       - $$f2(s,i,l_i,l_{i−1})=1$$  if i=1, li= VERB, and the sentence ends in a question mark; 0 otherwise. ** Again, if the weight λ2 associated with this feature is large and positive, then labelings that assign VERB to the first word in a question (e.g., “Is this a sentence beginning with a verb?”) are preferred.
       - $$f3(s,i,l_i,l_{i−1})=1$$  if li-1= ADJECTIVE and li= NOUN; 0 otherwise. ** Again, a positive weight for this feature means that adjectives tend to be followed by nouns.
-      - $$f4(s,i,l_i,l_{i−1})=1$$  if li−1= PREPOSITION and li= PREPOSITION. ** A negative weight λ4 for this function would mean that prepositions don’t tend to follow prepositions, so we should avoid labelings where this happens.
+      - $$f4(s,i,l_i,l_{i−1})=1$$  if li−1= PREPOSITION and li= PREPOSITION. ** A negative weight λ4 for this function would mean that prepositions don’t tend to follow prepositions, so we should avoid labelings where this happens. <br/>
     And that’s it! To sum up: to build a conditional random field, you just define a bunch of feature functions (which can depend on the entire sentence, a current position, and nearby labels), assign them weights, and add them all together, transforming at the end to a probability if necessary.
+
+    * ***Learning Weights***:
+    Let’s go back to the question of how to learn the feature weights in a CRF. One way, unsurprisingly, is to use gradient descent. <br/>
+    Assume we have a bunch of training examples (sentences and associated part-of-speech labels). Randomly initialize the weights of our CRF model. To shift these randomly initialized weights to the correct ones, for each training example… <br/>
+      - Go through each feature function fi, and calculate the gradient of the log probability of the training example with respect to
+      ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im2.PNG) <br/>
+      - Note that the first term in the gradient is the contribution of feature fi under the true label, and the second term in the gradient is the expected contribution of feature fi under the current model. This is exactly the form you’d expect gradient ascent to take.
+      - Move λi in the direction of the gradient:
+        ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im3.PNG) <br/>
+      where α is some learning rate.
+      - Repeat the previous steps until some stopping condition is reached (e.g., the updates fall below some threshold).
+    
+    * ***Finding the Optimal Labeling***: Suppose we’ve trained our CRF model, and now a new sentence comes in. How do we do label it? <br/>
+    The naive way is to calculate p(l|s) for every possible labeling l, and then choose the label that maximizes this probability. However, since there are km possible labels for a tag set of size k and a sentence of length m, this approach would have to check an exponential number of labels. <br/>
+    A better way is to realize that (linear-chain) CRFs satisfy an optimal substructure property that allows us to use a (polynomial-time) dynamic programming algorithm to find the optimal label, similar to the Viterbi algorithm for HMMs.
 * References:
     * http://www.alias-i.com/lingpipe/demos/tutorial/crf/read-me.html
     * https://blog.echen.me/2012/01/03/introduction-to-conditional-random-fields/
