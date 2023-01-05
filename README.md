@@ -351,10 +351,12 @@ We can use also use BERT for feature extraction just like ELMO.
 * It neglects the dependency between masked positions. For example, consider the sentence “New York is a city” and input to BERT to be “[MASK] [MASK] is a city”. The objective of BERT would be <br/>
 log p(New | is a city) + log p(York | is a city) <br/>
 From the above function, it is clear that there is no dependency between learning “New” and “York”. So, BERT can result in a prediction like “New Francisco is a city”.
+* It is not designed for semantic search(SBERT is better).
+* Many variations of BERT(like ROBERTA) found that NSP objective in BERT is not very effective.
 
 # ALBERT(A lite BERT)
 The main motivation behind ALBERT was to improve the training(training time) and results of BERT architecture by using different techniques such as factorization of embedding matrix, parameter sharing, and Inter sentence Coherence loss.
-  1. ***Cross-layer Parameter sharing***: There are multiple ways to share parameters(in transformer network), e.g., only sharing FFN parameters across layers, or only sharing attention parameters. The default decision for ALBERT is to share all parameters across layers. So, we can say that ALBERT have one encoder layer with different weight and apply that layer 12 times on the input. As a result, the large ALBERT model has about 18x fewer parameters compared to BERT-large. 
+  1. ***Cross-layer Parameter sharing***: There are multiple ways to share parameters(in transformer network), e.g., only sharing FFN parameters across layers, or only sharing attention parameters. The default decision for ALBERT is to )share all parameters across layers. So, we can say that ALBERT have one encoder layer with different weight and apply that layer 12 times on the input. As a result, the large ALBERT model has about 18x fewer parameters compared to BERT-large. 
   2. ***Embedding Factorization*** : In BERT, as well as later modelling advancements like XLNet and RoBERTa, the WordPiece embedding size E and the hidden layer size H are tied together, i.e., E ≡ H, which is sub-optimal. If E=H, then increasing H increases the size of the embedding matrix, which has size V×E.
   From a modeling perspective, WordPiece embeddings are meant to learn context-independent representations, whereas hidden-layer embeddings are meant to learn context-dependent representations.
     - A more efficient usage is to have H≫E.
