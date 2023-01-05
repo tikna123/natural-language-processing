@@ -252,7 +252,7 @@ After getting the input representation it is fed to the forward and backward LST
     ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im26.png) <br/>
     The context vector or intermediate vector ci for the output word yi is generated using the weighted sum of the annotations:
     ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im27.png) <br/>
-    The weights αij are computed by a softmax function given by the following equation:
+    The weights αij are computed by a softmax function given by the following equation: <br/>
     ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im28.png) <br/>
     ![](https://github.com/tikna123/natural-language-processing/blob/main/images/image29.png) <br/>
     eij is the output score of a feedforward neural network described by the function a that attempts to capture the alignment between input at j and output at i.
