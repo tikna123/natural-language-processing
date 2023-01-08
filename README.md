@@ -346,7 +346,7 @@ We can use also use BERT for feature extraction just like ELMO.
 
 # BERT limitations
 * It struggles to handle negation
-* It is very compute intensive while training and inferencing because of many parameters.
+* It is very compute intensive while training and inferencing because of many parameters(ALBERT and DistilBERT is solution here).
 * BERT corrupts the input with masks and suffers from pretrain-finetune discrepancy. In real life applications, we do not have inputs that are masked. 
 * It neglects the dependency between masked positions. For example, consider the sentence “New York is a city” and input to BERT to be “[MASK] [MASK] is a city”. The objective of BERT would be <br/>
 log p(New | is a city) + log p(York | is a city) <br/>
@@ -439,3 +439,27 @@ With the original BERT (and other transformers), we can build a sentence embeddi
     - https://towardsdatascience.com/an-intuitive-explanation-of-sentence-bert-1984d144a868
     - https://medium.com/dair-ai/tl-dr-sentencebert-8dec326daf4e
     - https://www.pinecone.io/learn/sentence-embeddings/
+
+# GPT-1(Generative Pre-Training)
+GPT-1 is the first model in GPT family of models. It uses decoder portion of the transformer architecture. The goal of GPT is to get a large gain on a wide range of diverse NLU tasks such as textual entailment, question answering, semantic similarity assessment, and document classification. Authors in the GPT paper propose a semi-supervised model consisting two stages. The first stage is unsupervised pre-training of a high capacity language model on a large corpus of raw text. This stage is followed by a fine-tuning stage, where model is trained on specific NLP tasks with small labeled data. It also make use of task-aware input transformations during fine-tuning to achieve effective transfer while requiring minimal changes to the model architecture. This general task-agnostic model outperforms discriminatively trained models that use architectures specifically crafted for each task, significantly improving upon the state of the art in 9 out of the 12 tasks studied. 
+* ***Intuition***: In the first stage, the model is trained on a large text corpus of unlabeled data to predict the next word in the sentence. From previous model designs we know that bigger the text corpus, and longer the attention span (further out we have context for the word ), the better the prediction for the next word. Therefore, for the first stage is that the model is learning the language and as it develops a better understanding it is able to learn discriminative features ,which become useful in the subsequent fine-tuning step. <br/>
+In the second stage, the model is fine tuned using small labeled datasets on specific discriminative tasks. These tasks can include sentiment analysis, question answer, classification, similarity etc. Intuition for the second stage is that the model is able to use learnings from the previous unsupervised step, expand on and apply those learnings to a specific discriminative task
+* ***Design/Framework***
+    - ***Unsupervised pre-training***:  Model largely followed the design of Transformer, using only the 12 layer decoder portion with masked self-attention heads. Model was trained for 100 epochs of mini batches of 64 randomly sampled, contiguous sequences of 512 tokens.
+    - ***Supervised fine-tuning***: Model was trained on textual entailment (contradiction or neutral), question answering, semantic similarity and text classification tasks. Hyper-parameter settings from unsupervised step was largely used as-is, and 3 epochs of training was found to be sufficient for most cases. <br/>
+    Model was able to pre-train in unsupervised step and transfer the learnings to specific supervised discriminative tasks.
+    - ***Discriminative Tasks***: Previous models typically used task specific architectures (fine-tuned models) on top of generic models/learned representations. This introduced a lot of task specific customization and additional architecture components. Instead, in this model the data for different tasks were converted into ordered sequence using delimiter, start & extract tokens (fitting to its 512 contiguous input tokens) to avoid tasks specific customization for fine-tuning.
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im47.png) <br/>
+    Fine tuning stage took data in a specific ordered format to avoid tasks specific customization in architecture.
+* ***Layers Transferred***: Authors analyzed the impact of transferring variable number of layers from unsupervised pre-training stage to supervised tasks. They found that transferring embeddings improved performance by up to 9% on the target layer — indicating that each layer in the pre-trained model contains useful functionality for solving target tasks.
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im48.png) <br/>
+Each layer in the unsupervised pre-trained model contains useful functionality for solving target tasks.
+* ***Zero Shots Learning***: Authors performed series of tests using generative model (Unsupervised learning stage)without the supervised fine-tuning (Second stage) step for variety of discriminative tasks. They found that the performance is stable and steadily increases with training, suggesting that generative pre-training stage learns wide range of task relevant functionality. <br/>
+Generative pre-training stage learns wide range of task relevant functionality and possibly can be employed in a few or zero shot learning setting.
+* References:
+    - https://medium.com/analytics-vidhya/gpt-3-i-build-code-fef900c47619
+    - https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf (paper)
+
+
+# GPT-3(Generative Pre-Training)
+GPT-3 is an autoregressive language model with 175 billion parameters, 10 times larger than its predecessor GPT-2.
