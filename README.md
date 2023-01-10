@@ -461,6 +461,20 @@ Generative pre-training stage learns wide range of task relevant functionality a
     - https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf (paper)
 
 # GPT-2
-  - 
+GPT-2 has no major architecture changes but much larger model than GPT-1 to learn even stronger language model. ALso, GPT-2 is trained using a new larger dataset of millions of webpages called WebText. GPT-2 zero-shots performance matched state of the art on 7 out of 8 tested language model datasets used in the study.
+* ***Model architecture***: 
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im49.png) <br/>
+GPT-2 had 1.5 billion parameters. which was 10 times more than GPT-1 (117M parameters). Major differences from GPT-1 were:
+  - GPT-2(Extra large) had 48 layers and used 1600 dimensional vectors for word embedding.
+  - Larger vocabulary of 50,257 tokens was used.
+  - Larger batch size of 512 and larger context window of 1024 tokens were used.
+  - Layer normalisation was moved to input of each sub-block and an additional layer normalisation was added after final self-attention block.
+  - At initialisation, the weight of residual layers was scaled by 1/√N, where N was the number of residual layers.
+  - The smallest model is equivalent to the original GPT-1.
+  - The second smallest equivalent to the largest model from BERT.
+* ***Task Conditioning***: We had seen that training objective of language model is formulated as P(output|input). However, GPT-2 aimed at learning multiple tasks using the same unsupervised model. To achieve that, the learning objective should be modified to P(output|input, task). This modification is known as task conditioning, where the model is expected to produce different output for same input for different tasks. Some models implement task conditioning at an architectural level where the model is fed both, the input and the task. For language models, the output, input and task, all are sequences of natural language. Thus, task conditioning for language models is performed by providing examples or natural language instructions to the model to perform a task. By training on task along with the inputs, GPT-2 model became more generic and task agnostic. Task conditioning forms the basis for zero-shot task transfer which we will cover next.
+* ***Zero Shot Learning and Zero Short Task Transfer***: An interesting capability of GPT 2 is zero shot task transfer. Zero shot learning is a special case of zero shot task transfer where no examples are provided at all and the model understands the task based on the given instruction. Instead of rearranging the sequences, as was done for GPT-1 for fine-tuning, input to GPT-2 was given in a format which expected the model to understand the nature of task and provide answers. This was done to emulate zero-shot task transfer behaviour. E.g. for English to French translation task, the model was given an English sentence followed by the word French and a prompt (:). The model was supposed to understand that it is a translation task and give French counterpart of English sentence.
+* ***Dataset***: To create an extensive and good quality dataset the authors scraped the Reddit platform and pulled data from outbound links of high upvoted articles. The resulting dataset called WebText, had 40GB of text data from over 8 million documents. This dataset was used for training GPT-2 and was huge compared to Book Corpus dataset used for training GPT-1 model.
+
 # GPT-3
 GPT-3 is an autoregressive language model with 175 billion parameters, 10 times larger than its predecessor GPT-2.
