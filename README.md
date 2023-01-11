@@ -129,12 +129,12 @@ THe GloVe algorithm consists of following steps: <br/>
   1. Collect word co-occurence statistics in a form of word co-ocurrence matrix X. Each element Xij of such matrix represents how often word i appears in context of word j. Usually we scan our corpus in the following manner: for each term we look for context terms within some area defined by a window_size before the term and a window_size after the term. Also we give less weight for more distant words, usually using this formula:
                                 decay=1/offset
   2. Define soft constraints for each word pair:
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im_gl1.PNG) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im_gl1.png) <br/>
   Here wi - vector for the main word, wj - vector for the context word, bi, bj are scalar biases for the main and context words.
   3. Define a cost function
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im_gl2.PNG) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im_gl2.png) <br/>
 Here f is a weighting function which help us to prevent learning only from extremely common word pairs. The GloVe authors choose the following function:
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im_gl3.PNG) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im_gl3.png) <br/>
 * Details
     * https://cran.r-project.org/web/packages/text2vec/vignettes/glove.html
     * https://jonathan-hui.medium.com/nlp-word-embedding-glove-5e7f523999f6 (best)
