@@ -556,4 +556,32 @@ In the standard “pre-training and fine-tuning” paradigm, the gap between the
     - https://thegradient.pub/prompting/
     - https://github.com/dair-ai/Prompt-Engineering-Guide
 
+# Choosing the right LM for your usecase
+- ***Pre-training Objective***: There are three generic objectives used for pre-training language models: sequence-to-sequence transduction, autoregression and auto-encoding. All of them require the model to master broad linguistic knowledge. <br/>
+The original task addressed by the encoder-decoder architecture as well as the Transformer model is sequence-to-sequence transduction: a sequence is transduced into a sequence in a different representation framework. The classical sequence-to-sequence task is machine translation, but other tasks such as summarisation are frequently formulated in this manner. An example of sequence-to-sequence LLMs is the BART family. <br/>
+The second task is autoregression(AR), which is also the original language modelling objective. In autoregression, the model learns to predict the next output (token) based on previous tokens. The learning signal is restricted by the unidirectionality of the enterprise — the model can only use information from the right or from the left of the predicted token. This is a major limitation since words can depend both on past as well as on future positions. As an example, consider how the verb written impacts the following sentence in both directions: <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im58.png) <br/>
+Here, the position of paper is restricted to something that is writable, while the position of student is restricted to a human or, anyway, another intelligent entity capable of writing. Many of the LLMs making today’s headlines are autoregressive, incl. the GPT family, PaLM and BLOOM. <br/>
+The third task — auto-encoding(AE) — solves the issue of unidirectionality. Auto-encoding is very similar to the learning of classical word embeddings. First, we corrupt the training data by hiding a certain portion of tokens — typically 10–20% — in the input. The model then learns to reconstruct the correct inputs based on the surrounding context, taking into account both the preceding and the following tokens. The typical example of auto-encoders is the BERT family, where BERT stands for Bidirectional Encoder Representations from Transformers. <br/>
 
+The pre-training objective provides an important hint: autoregressive models perform well on text generation tasks such as conversational AI, question answering and text summarisation, while auto-encoders excel at “understanding” and structuring language, for example for sentiment analysis and various information extraction tasks. Models intended for zero-shot learning can theoretically perform all kinds of tasks as long as they receive appropriate prompts — however, their accuracy is generally lower than that of fine-tuned models. <br/>
+To make things more concrete, the following chart shows how popular NLP tasks are associated with prominent language models in the NLP literature. The associations are computed based on multiple similarity and aggregation metrics, incl. embedding similarity and distance-weighted co-occurrence. Model-task pairs with higher scores, such as BART / Text Summarization and LaMDA / Conversational AI, indicate a good fit based on historical data.
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im59.png) <br/>
+
+The following table provides a summary of the key features for the most popular LLMs:
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/im60.png) <br/>
+Below are some general guidelines for the selection and deployment of LLMs:
+ 1. When evaluating potential models, be clear about where you are in your AI journey:
+  - At the beginning, it might be a good idea to experiment with LLMs deployed via cloud APIs.
+  - Once you have found product-market fit, consider hosting and maintaining your model on your side to have more control and further sharpen model performance to your application.
+ 2. To align with your downstream task, your AI team should create a short-list of models based on the following criteria:
+  - Benchmarking results in the academic literature, with a focus on your downstream task
+  - Alignment between the pre-training objective and downstream task: consider auto-encoding for NLU and autoregression for NLG
+  - Previous experience reported for this model-task combination
+ 3. The short-listed models should be then tested against your real-world task and dataset to get a first feeling for the performance.
+ 4. In most cases, you are likely to achieve a better quality with dedicated fine-tuning. However, consider few-/zero-shot-learning if you don’t have the internal tech skills or budget for fine-tuning, or if you need to cover a large number of tasks.
+
+World knowledge and reasoning capacity of LLM are strictly limited to the information they find at the surface of language. They also can’t situate facts in time and might provide you with outdated information without blinking an eye. If you are building an application that relies on generating up-to-date or even original knowledge, consider combining your LLM with additional multimodal, structured or dynamic knowledge sources.
+
+- References:
+    - https://towardsdatascience.com/choosing-the-right-language-model-for-your-nlp-use-case-1288ef3c4929
