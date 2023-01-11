@@ -16,11 +16,11 @@ It contains details about the different topics in Natural language Processing.
 * [Transformer](#Transformer)
 * [BERT](#BERT)
 * [BERT limitations](#BERT-limitations)
-* [ALBERT((A lite BERT))](#ALBERT((A-lite-BERT)))
+* [ALBERT(A lite BERT)](#ALBERT(A-lite-BERT))
 * [DistilBERT](#DistilBERT)
 * [ROBERTA](#ROBERTA)
 * [XLNET](#XLNET)
-* [Sentence-BERT(SBERT)](#Sentence-BERT(SBERT))
+* [Sentence BERT(SBERT)](#Sentence-BERT(SBERT))
 * [GPT-1(Generative Pretraining)](#GPT-1(Generative-Pretraining))
 * [GPT-2](#GPT-2)
 * [GPT-3](#GPT-3)
@@ -426,7 +426,7 @@ log P(New | is a city) + log P(York | is a city)
     - https://towardsdatascience.com/what-is-two-stream-self-attention-in-xlnet-ebfe013a0cf3
     - https://arxiv.org/pdf/1906.08237.pdf(paper)
 
-# Sentence-BERT(SBERT)
+# Sentence BERT(SBERT)
 Sentence BERT is a modification of the standard pretrained BERT network that uses siamese and triplet networks to create sentence embeddings for each sentence that can then be compared using a cosine-similarity, making semantic search for a large number of sentences feasible (only requiring a few seconds of training time). <br/><br/>
 ***Issues with BERT for Sentence Similarity***: BERT uses a cross-encoder structure to calculate accurate sentence similarity. This meant that we would pass two sentences to BERT, add a classification head to the top of BERT — and use this to output a similarity score. <br/>
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im44.png) <br/>
