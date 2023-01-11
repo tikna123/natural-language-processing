@@ -220,8 +220,9 @@ After getting the input representation it is fed to the forward and backward LST
         * For example: use lr=0.01 for the last (most specific) layer, lr=0.005  for the second-last, etc.
     * ***Slanted triangular learning rates***
         * Slanted Triangular Learning Rate is a learning rate schedule; the maximum learning rate (last layer) grows linearly until it maxes out and then starts to be lowered
+![](https://github.com/tikna123/natural-language-processing/blob/main/images/ulm_lr.png) <br/>
     * ***Gradual unfreezing***
-        * Refers to unfreezing one layer per epoch, starting at the last (most specific) layer. Then, for each new epoch, one extra layer is added to the set of unfrozen layers, and these get to be fine-tuned in that epoch.
+        * Refers to unfreezing one layer per epoch, starting at the last (most specific) layer. Then, for each new epoch, one extra layer is added to the set of unfrozen layers, and these get to be fine-tuned in that epoch. <br/>
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im23.png) <br/>
 * There are 3 steps in ULMFit
     1. ***General-domain LM pretraining(Unsupervised)***: The LM is trained on a general-domain corpus to capture general features of the language in different layers.
