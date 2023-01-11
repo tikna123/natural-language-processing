@@ -21,7 +21,7 @@ It contains details about the different topics in Natural language Processing.
 * [ROBERTA](#ROBERTA)
 * [XLNET](#XLNET)
 * [Sentence-BERT(SBERT)](#Sentence-BERT(SBERT))
-* [GPT-1(Generative Pre-Training)](#GPT-1(Generative-Pre-Training))
+* [GPT-1(Generative Pretraining)](#GPT-1(Generative-Pretraining))
 * [GPT-2](#GPT-2)
 * [GPT-3](#GPT-3)
 * [ChatGPT](#ChatGPT)
@@ -448,7 +448,7 @@ With the original BERT (and other transformers), we can build a sentence embeddi
     - https://medium.com/dair-ai/tl-dr-sentencebert-8dec326daf4e
     - https://www.pinecone.io/learn/sentence-embeddings/
 
-# GPT-1(Generative Pre-Training)
+# GPT-1(Generative Pretraining)
 GPT-1 is the first model in GPT family of models. It uses decoder portion of the transformer architecture. Authors in the GPT paper propose a semi-supervised model consisting two stages. The first stage is unsupervised pre-training of a high capacity language model on a large corpus of raw text. This stage is followed by a fine-tuning stage, where model is trained on specific NLP tasks with small labeled data. It also make use of task-aware input transformations during fine-tuning to achieve effective transfer while requiring minimal changes to the model architecture. This general task-agnostic model outperforms discriminatively trained models that use architectures specifically crafted for each task, significantly improving upon the state of the art in 9 out of the 12 tasks studied. 
 * ***Intuition***: In the first stage, the model is trained on a large text corpus of unlabeled data to predict the next word in the sentence. From previous model designs we know that bigger the text corpus, and longer the attention span (further out we have context for the word ), the better the prediction for the next word. Therefore, for the first stage is that the model is learning the language and as it develops a better understanding it is able to learn discriminative features ,which become useful in the subsequent fine-tuning step. <br/>
 In the second stage, the model is fine tuned using small labeled datasets on specific discriminative tasks. These tasks can include sentiment analysis, question answer, classification, similarity etc. Intuition for the second stage is that the model is able to use learnings from the previous unsupervised step, expand on and apply those learnings to a specific discriminative task
