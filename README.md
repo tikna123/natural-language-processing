@@ -494,7 +494,7 @@ Also, Most of the language tasks does not require large supervised datasets to l
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im52.png) <br/>
 As the number of examples and model size increased, model accuracy increased as well. Broadly, On NLP tasks GPT-3 showed promising results in the zero & one shot setting, and in the few shots setting sometimes even surpassed state of the art results. Also, gap in accuracy increases between One, Zero and Few Shots settings as model size increases, suggesting larger models are better meta-learners.
 - ***Dataset***: GPT-3 was trained on a mix of five different corpora, each having certain weight assigned to it. High quality datasets were sampled more often, and model was trained for more than one epoch on them. The five datasets used were Common Crawl, WebText2, Books1, Books2 and Wikipedia.
-- ***Modle Architecture***: The architecture of GPT-3 is same as GPT-2. Few major differences from GPT-2 are:
+- ***Model Architecture***: The architecture of GPT-3 is same as GPT-2. Few major differences from GPT-2 are:
     - GPT-3 has 96 layers with each layer having 96 attention heads.
     - Size of word embeddings was increased to 12888 for GPT-3 from 1600 for GPT-2.
     - Context window size was increased from 1024 for GPT-2 to 2048 tokens for GPT-3.
@@ -505,3 +505,33 @@ As the number of examples and model size increased, model accuracy increased as 
     - https://medium.com/walmartglobaltech/the-journey-of-open-ai-gpt-models-32d95b7b7fb2
     - https://360digitmg.com/blog/types-of-gpt-in-artificial-intelligence
 
+# ChatGPT: 
+Large Language Models, such as GPT-3, are trained on vast amounts of text data from the internet and are capable of generating human-like text, but they may not always produce output that is consistent and aligned with human expectations or desirable values. Model Alignment is concerned with what we actually want the model to do versus what it is being trained to do. It asks the question “is that objective function consistent with our intentions?” and refers to the extent to which a model's goals and behavior align with human values and expectations. Models like the original GPT-3 are misaligned. Following are some of the problems that large language models faced:
+ - Lack of helpfulness: not following the user's explicit instructions.
+ - Hallucinations: model making up unexisting or wrong facts.
+ - Lack of interpretability: it is difficult for humans to understand how the model arrived at a particular decision or prediction.
+ - Generating biased or toxic output: a language model that is trained on biased/toxic data may reproduce that in its output, even if it was not explicitly instructed to do so. 
+<br/> 
+ Language models are only trained to predict the next word (or a masked word) in a text sequence, may not necessarily be learning some higher-level representations of its meaning. As a result, the model struggles to generalize to tasks or contexts that require a deeper understanding of language. 
+<br/>
+ChatGPT is based on the original GPT-3 model, but has been further trained by using human feedback to guide the learning process with the specific goal of mitigating the model’s misalignment issues. 
+ChatGPT is fine-tuned using Supervised learning and Reinforcement Learning, but it is the Reinforcement Learning component specifically that makes ChatGPT unique. The creators use a particular technique called Reinforcement Learning from Human Feedback (RLHF), which uses human feedback in the training loop to minimize harmful, untruthful, and/or biased outputs.
+<br/>
+ChatGPT provides a significant improvement over its predecessor GPT-3. Similarly to many Large Language Models, ChatGPT is capable of generating text in a wide range of styles and for different purposes, but with remarkably greater precision, detail, and coherence. It represents the next generation in OpenAI's line of Large Language Models, and it is designed with a strong focus on interactive conversations.
+
+- ***Reinforcement Learning from Human Feedback***: The method overall consists of three distinct steps:
+    1. ***Supervised fine-tuning(SFT) step***: A pre-trained language model is fine-tuned on a relatively small amount of demonstration data curated by labelers, to learn a supervised policy (the SFT model) that generates outputs from a selected list of prompts. 
+        - ***Data collection***: A list of prompts is selected and a group of human labelers are asked to write down the expected output response. Two different sources of prompts have been used: some have been prepared directly from the labelers or developers, some have been sampled from OpenAI’s API requests (i.e. from their GPT-3 customers). As this whole process is slow and expensive, the result is a relatively small, high-quality curated dataset (of approximately 12-15k data points, presumably) that is to be used to fine-tune a pretrained language model.
+        - ***Model***: Instead of fine-tuning the original GPT-3 model, the developers of ChatGPT opted for a pretrained model in the so-called GPT-3.5 series. Presumably the baseline model used is the latest one text-davinci-003, a GPT-3 model which was fine-tuned mostly on programming code. 
+        ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im53.png) <br/>
+    This supervised learning step suffers from high scalability costs. To overcome this problem, instead of asking human labelers to create a much bigger curated dataset, the strategy is now to have the labelers rank different outputs of the SFT model to create a reward model –let’s explain this in more detail in the following section.
+    2. ***Reward Model***: The goal is to learn an objective function (the reward model) directly from the data. The purpose of this function is to give a score to the SFT model outputs, proportional to how desirable these outputs are for humans. In practice, this will strongly reflect the specific preferences of the selected group of human labelers and the common guidelines which they agreed to follow. In the end, this process will extract from the data an automatic system that is supposed to mimic human preferences. Here how it works:
+     - A list of prompts is selected and the SFT model generates multiple outputs (anywhere between 4 and 9) for each prompt.
+     - Labelers rank the outputs from best to worst. The result is a new labeled dataset, where the rankings are the labels. The size of this dataset is approximately 10 times bigger than the curated dataset used for the SFT model.
+     - This new data is used to train a reward model (RM). This model takes as input a few of the SFT model outputs and ranks them in order of preference.
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im54.png) <br/>
+    3. ***Fine-tuning the SFT model via Proximal Policy Optimization (PPO)***: Reinforcement Learning is now applied to fine-tune the SFT policy by letting it optimize the reward model. The specific algorithm used is called Proximal Policy Optimization (PPO) and the fine-tuned model is referred to as the PPO model. In this step, the PPO model is initialized from the SFT model, and the value function is initialized from the reward model. The environment is a bandit environment which presents a random prompt and expects a response to the prompt. Given the prompt and response, it produces a reward (determined by the reward model) and the episode ends. A per-token KL penalty is added from the SFT model at each token to mitigate over optimization of the reward model.
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im55.png) <br/>
+- References:
+    - https://www.assemblyai.com/blog/how-chatgpt-actually-works/
+    - https://arxiv.org/pdf/2203.02155.pdf (instructGPT paper)
