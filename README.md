@@ -2,31 +2,31 @@
 It contains details about the different topics in Natural language Processing.
 * [TF-IDF](#TF-IDF)
 * [Conditional Random Field](#Conditional-Random-Field)
-* Word Embeddings
-    * Word2vec
-    * Glove
-* Character level embeddings
-    * Fasttext
-* Recurrent Neural Network
-* LSTM
-* ELMO
-* Flair
-* ULMFIT
-* Attention
-* Transformer
-* BERT
-* BERT limitations
-* ALBERT
-* DistilBERT
-* ROBERTA
-* XLNET
-* Sentence-BERT(SBERT)
-* GPT-1(Generative Pre-Training)
-* GPT-2
-* GPT-3
-* ChatGPT
-* Prompt Engineering(in NLP)
-* Choosing the right LM for your usecase
+* [Word Embeddings](#Word-Embeddings)
+    * [Word2vec](#Word2vec)
+    * [Glove](#Glove)
+* [Character level embeddings](#Character-level-embeddings)
+    * [Fasttext](#Fasttext)
+* [Recurrent Neural Network](#Recurrent-Neural-Network)
+* [LSTM](#LSTM)
+* [ELMO](#ELMO)
+* [Flair](#Flair)
+* [ULMFIT](#ULMFIT)
+* [Attention](#Attention)
+* [Transformer](#Transformer)
+* [BERT](#BERT)
+* [BERT limitations](#BERT-limitations)
+* [ALBERT](#ALBERT)
+* [DistilBERT](#DistilBERT)
+* [ROBERTA](#ROBERTA)
+* [XLNET](#XLNET)
+* [Sentence-BERT(SBERT)](#Sentence-BERT(SBERT))
+* [GPT-1(Generative Pre-Training)][#GPT-1(Generative-Pre-Training)]
+* [GPT-2](#GPT-2)
+* [GPT-3](#GPT-3)
+* [ChatGPT](#ChatGPT)
+* [Prompt Engineering(in NLP)](#Prompt-Engineering(in-NLP))
+* [Choosing the right LM for your usecase](#Choosing-the-right-LM-for-your-usecase)
 
 # TF-IDF
 * TF-IDF (term frequency-inverse document frequency) is a statistical measure that evaluates how relevant a word is to a document in a collection of documents.
