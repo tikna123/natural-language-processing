@@ -568,16 +568,16 @@ The pre-training objective provides an important hint: autoregressive models per
 To make things more concrete, the following chart shows how popular NLP tasks are associated with prominent language models in the NLP literature. The associations are computed based on multiple similarity and aggregation metrics, incl. embedding similarity and distance-weighted co-occurrence. Model-task pairs with higher scores, such as BART / Text Summarization and LaMDA / Conversational AI, indicate a good fit based on historical data.
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im59.png) <br/>
 
-The following table provides a summary of the key features for the most popular LLMs:
+The following table provides a summary of the key features for the most popular LLMs: <br/>
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im60.png) <br/>
 Below are some general guidelines for the selection and deployment of LLMs:
  1. When evaluating potential models, be clear about where you are in your AI journey:
-  - At the beginning, it might be a good idea to experiment with LLMs deployed via cloud APIs.
-  - Once you have found product-market fit, consider hosting and maintaining your model on your side to have more control and further sharpen model performance to your application.
+    - At the beginning, it might be a good idea to experiment with LLMs deployed via cloud APIs.
+    - Once you have found product-market fit, consider hosting and maintaining your model on your side to have more control and further sharpen model performance to your application.
  2. To align with your downstream task, your AI team should create a short-list of models based on the following criteria:
-  - Benchmarking results in the academic literature, with a focus on your downstream task
-  - Alignment between the pre-training objective and downstream task: consider auto-encoding for NLU and autoregression for NLG
-  - Previous experience reported for this model-task combination
+    - Benchmarking results in the academic literature, with a focus on your downstream task
+    - Alignment between the pre-training objective and downstream task: consider auto-encoding for NLU and autoregression for NLG
+    - Previous experience reported for this model-task combination
  3. The short-listed models should be then tested against your real-world task and dataset to get a first feeling for the performance.
  4. In most cases, you are likely to achieve a better quality with dedicated fine-tuning. However, consider few-/zero-shot-learning if you don’t have the internal tech skills or budget for fine-tuning, or if you need to cover a large number of tasks.
 
