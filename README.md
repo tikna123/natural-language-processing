@@ -3,20 +3,20 @@ It contains details about the different topics in Natural language Processing.
 * [TF-IDF](#TF-IDF)
 * [Conditional Random Field](#Conditional-Random-Field)
 * [Word Embeddings](#Word-Embeddings)
-    * [Word2vec](#Word2vec)
+    * [Word2vec(Skipgram)](#Word2vec(Skipgram))
     * [Glove](#Glove)
 * [Character level embeddings](#Character-level-embeddings)
     * [Fasttext](#Fasttext)
 * [Recurrent Neural Network](#Recurrent-Neural-Network)
-* [LSTM](#LSTM)
-* [ELMO](#ELMO)
+* [LSTM((Long Short Term Memory networks))](#LSTM((Long-Short-Term-Memory-networks)))
+* [ELMO((Embeddings from Language Models))](#ELMO((Embeddings-from-Language-Models)))
 * [Flair](#Flair)
 * [ULMFIT](#ULMFIT)
 * [Attention](#Attention)
 * [Transformer](#Transformer)
 * [BERT](#BERT)
 * [BERT limitations](#BERT-limitations)
-* [ALBERT](#ALBERT)
+* [ALBERT((A lite BERT))](#ALBERT((A-lite-BERT)))
 * [DistilBERT](#DistilBERT)
 * [ROBERTA](#ROBERTA)
 * [XLNET](#XLNET)
@@ -218,7 +218,7 @@ After getting the input representation it is fed to the forward and backward LST
     * https://github.com/flairNLP/flair
     * https://www.analyticsvidhya.com/blog/2019/02/flair-nlp-library-python/
     * https://www.section.io/engineering-education/how-to-create-nlp-application-with-flair/
-# ULMFit(Transfer learning)
+# ULMFit
 * Universal Language Model FIne-Tuning(ULMFIT) is a transfer learning technique which can help in various NLP tasks. It has been state-of-the-art NLP technique for a long time, but then it was dethroned by BERT[which recently got dethroned by XLNet in text classification]
 * Deep learning requires a lot of dataset. Specifically when doing transfer learning, we have a large dataset on which our base model is build and we transfer learn the parameters of the neural network to our domain specific dataset. When we have a smaller domain specific dataset, the models overfit. To solve this problem, Jeremy Howard and Sebastian Ruder suggest 3 different techniques in there paper on Universal Language Model Fine-tuning for Text Classification for fine-tuning in transfer learning LMs for NLP specific tasks
     * ***Discriminative fine-tuning***
@@ -390,8 +390,8 @@ The main motivation behind ALBERT was to improve the training(training time) and
     - https://medium.com/huggingface/distilbert-8cf3380435b5
     - https://arxiv.org/pdf/1910.01108.pdf(paper)
 
-# ROBERTA (Robustly Optimized BERT Pretraining Approach)
-  RoBERTa is designed to improve upon BERT by addressing some of its shortcomings, including the use of a smaller dataset and the lack of fine-tuning on a specific task. RoBERTa is trained on a larger dataset, including the BooksCorpus (800M words) and the English Wikipedia (2.5B words), and uses a dynamic masking technique that allows the model to learn from more context. There are series of modifications to the original BERT architecture to achieve SOTA across multiple tasks such as:
+# ROBERTA
+  RoBERTa(Robustly Optimized BERT Pretraining Approach) is designed to improve upon BERT by addressing some of its shortcomings, including the use of a smaller dataset and the lack of fine-tuning on a specific task. RoBERTa is trained on a larger dataset, including the BooksCorpus (800M words) and the English Wikipedia (2.5B words), and uses a dynamic masking technique that allows the model to learn from more context. There are series of modifications to the original BERT architecture to achieve SOTA across multiple tasks such as:
   - ***Training with dynamic masking***: The original BERT implementation performs masking during data preprocessing, which results in a single static mask. This approach was contrasted with dynamic masking, in which a new masking pattern is created each time a sequence is fed to the model. To avoid using the same mask for each training instance in every epoch, training data was duplicated 10 times so that each sequence is masked in 10 different ways over the 40 epochs of training. Thus, each training sequence was seen with the same mask four times during training.
   - ***Full Sentences without NSP Loss***: Training with and without NSP loss are compared with blocks of text from a single document. It is found that dropping off the NSP loss matches or slightly improves downstream task performance. It was noted that restricting sequences that come from a single document (DOC-SENTENCES) performs slightly better than plugging sequences from multiple documents (FULL-SENTENCES). 
   - ***Training with large batches***: Training with large batch sizes accelerates optimization and increases task accuracy. In addition, distributed data-parallel training makes it easier to parallelize large batches. When the model is tuned properly, large batch sizes can make the model perform better at a given task.
@@ -426,7 +426,7 @@ log P(New | is a city) + log P(York | is a city)
     - https://towardsdatascience.com/what-is-two-stream-self-attention-in-xlnet-ebfe013a0cf3
     - https://arxiv.org/pdf/1906.08237.pdf(paper)
 
-# Sentence BERT(SBERT)
+# Sentence-BERT(SBERT)
 Sentence BERT is a modification of the standard pretrained BERT network that uses siamese and triplet networks to create sentence embeddings for each sentence that can then be compared using a cosine-similarity, making semantic search for a large number of sentences feasible (only requiring a few seconds of training time). <br/><br/>
 ***Issues with BERT for Sentence Similarity***: BERT uses a cross-encoder structure to calculate accurate sentence similarity. This meant that we would pass two sentences to BERT, add a classification head to the top of BERT — and use this to output a similarity score. <br/>
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im44.png) <br/>
