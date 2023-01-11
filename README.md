@@ -21,7 +21,7 @@ It contains details about the different topics in Natural language Processing.
 * [ROBERTA](#ROBERTA)
 * [XLNET](#XLNET)
 * [Sentence-BERT(SBERT)](#Sentence-BERT(SBERT))
-* [GPT-1(Generative Pre-Training)][#GPT-1(Generative-Pre-Training)]
+* [GPT-1(Generative PreTraining)][#GPT-1(Generative-PreTraining)]
 * [GPT-2](#GPT-2)
 * [GPT-3](#GPT-3)
 * [ChatGPT](#ChatGPT)
@@ -97,7 +97,7 @@ It contains details about the different topics in Natural language Processing.
 # Word Embeddings
 Word embeddings are a type of word representation that allows words with similar meaning to have a similar representation. Word embeddings help in generating the distributed representation for text which are lower in dimension as compare to other text representation techniques like TF-IDF.
 One of the benefits of using dense and low-dimensional vectors is computational: the majority of neural network toolkits do not play well with very high-dimensional, sparse vectors. … The main benefit of the dense representations is generalization power: if we believe some features may provide similar clues, it is worthwhile to provide a representation that is able to capture these similarities.
-## Word2Vec(Skipgram)
+## Word2vec(Skipgram)
 * Word2Vec uses a trick in which we train a simple neural network with a single hidden layer to perform a certain task, but then we’re not actually going to use that neural network for the task we trained. nstead, the goal is actually just to learn the weights of the hidden layer–we’ll see that these weights are actually the “word vectors” that we’re trying to learn.
 * ***The Fake task***: Given a specific word in the middle of a sentence (the input word), look at the words nearby and pick one at random. The network is going to tell us the probability for every word in our vocabulary of being the “nearby word” that we chose. Here, "nearby" means there is actually a "window size" parameter to the algorithm. A typical window size might be 5, meaning 5 words behind and 5 words ahead (10 in total). The output probabilities are going to relate to how likely it is find each vocabulary word nearby our input word. For example, if you gave the trained network the input word “Soviet”, the output probabilities are going to be much higher for words like “Union” and “Russia” than for unrelated words like “watermelon” and “kangaroo”.
 * We’ll train the neural network to do this by feeding it word pairs found in our training documents. The below example shows some of the training samples (word pairs) we would take from the sentence “The quick brown fox jumps over the lazy dog.” I’ve used a small window size of 2 just for the example. The word highlighted in blue is the input word.
@@ -448,7 +448,7 @@ With the original BERT (and other transformers), we can build a sentence embeddi
     - https://medium.com/dair-ai/tl-dr-sentencebert-8dec326daf4e
     - https://www.pinecone.io/learn/sentence-embeddings/
 
-# GPT-1(Generative Pre-Training)
+# GPT-1(Generative PreTraining)
 GPT-1 is the first model in GPT family of models. It uses decoder portion of the transformer architecture. Authors in the GPT paper propose a semi-supervised model consisting two stages. The first stage is unsupervised pre-training of a high capacity language model on a large corpus of raw text. This stage is followed by a fine-tuning stage, where model is trained on specific NLP tasks with small labeled data. It also make use of task-aware input transformations during fine-tuning to achieve effective transfer while requiring minimal changes to the model architecture. This general task-agnostic model outperforms discriminatively trained models that use architectures specifically crafted for each task, significantly improving upon the state of the art in 9 out of the 12 tasks studied. 
 * ***Intuition***: In the first stage, the model is trained on a large text corpus of unlabeled data to predict the next word in the sentence. From previous model designs we know that bigger the text corpus, and longer the attention span (further out we have context for the word ), the better the prediction for the next word. Therefore, for the first stage is that the model is learning the language and as it develops a better understanding it is able to learn discriminative features ,which become useful in the subsequent fine-tuning step. <br/>
 In the second stage, the model is fine tuned using small labeled datasets on specific discriminative tasks. These tasks can include sentiment analysis, question answer, classification, similarity etc. Intuition for the second stage is that the model is able to use learnings from the previous unsupervised step, expand on and apply those learnings to a specific discriminative task
