@@ -1,7 +1,7 @@
 # Natural Language Processing
 It contains details about the different topics in Natural language Processing.
-* [TF-IDF](# TF-IDF)
-* [Conditional Random Field](# Conditional-Random-Field)
+* [TF-IDF](#TF-IDF)
+* [Conditional Random Field](#Conditional-Random-Field)
 * Word Embeddings
     * Word2vec
     * Glove
