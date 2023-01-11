@@ -1,7 +1,7 @@
 # Natural Language Processing
 It contains details about the different topics in Natural language Processing.
-* TF-IDF
-* Conditional Random Field
+* [TF-IDF](# TF-IDF)
+* [Conditional Random Field](# Conditional-Random-Field)
 * Word Embeddings
     * Word2vec
     * Glove
@@ -21,6 +21,12 @@ It contains details about the different topics in Natural language Processing.
 * ROBERTA
 * XLNET
 * Sentence-BERT(SBERT)
+* GPT-1(Generative Pre-Training)
+* GPT-2
+* GPT-3
+* ChatGPT
+* Prompt Engineering(in NLP)
+* Choosing the right LM for your usecase
 
 # TF-IDF
 * TF-IDF (term frequency-inverse document frequency) is a statistical measure that evaluates how relevant a word is to a document in a collection of documents.
@@ -507,7 +513,7 @@ As the number of examples and model size increased, model accuracy increased as 
     - https://medium.com/walmartglobaltech/the-journey-of-open-ai-gpt-models-32d95b7b7fb2
     - https://360digitmg.com/blog/types-of-gpt-in-artificial-intelligence
 
-# ChatGPT: 
+# ChatGPT
 Large Language Models, such as GPT-3, are trained on vast amounts of text data from the internet and are capable of generating human-like text, but they may not always produce output that is consistent and aligned with human expectations or desirable values. Model Alignment is concerned with what we actually want the model to do versus what it is being trained to do. It asks the question “is that objective function consistent with our intentions?” and refers to the extent to which a model's goals and behavior align with human values and expectations. Models like the original GPT-3 are misaligned. Following are some of the problems that large language models faced:
  - Lack of helpfulness: not following the user's explicit instructions.
  - Hallucinations: model making up unexisting or wrong facts.
