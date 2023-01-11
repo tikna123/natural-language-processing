@@ -5,8 +5,6 @@ It contains details about the different topics in Natural language Processing.
 * [Word Embeddings](#Word-Embeddings)
     * [Word2vec](#Word2vec)
     * [Glove](#Glove)
-* [Character level embeddings](#Character-level-embeddings)
-    * [Fasttext](#Fasttext)
 * [Recurrent Neural Network](#Recurrent-Neural-Network)
 * [LSTM](#LSTM)
 * [ELMO](#ELMO)
@@ -140,19 +138,11 @@ Here f is a weighting function which help us to prevent learning only from extre
     * https://jonathan-hui.medium.com/nlp-word-embedding-glove-5e7f523999f6 (best)
     * https://towardsdatascience.com/light-on-math-ml-intuitive-guide-to-understanding-glove-embeddings-b13b4f19c010
 
-# Character level embeddings
-## Fasttext
-FastText is designed to be simple to use for developers, domain experts, and students. It's dedicated to text classification and learning word representations, and was designed to allow for quick model iteration and refinement without specialized hardware. fastText models can be trained on more than a billion words on any multicore CPU in less than a few minutes. Fasttext embeddings handles rare words better than word2vec.
-* References
-    * https://pypi.org/project/fasttext/
-    * https://radimrehurek.com/gensim/models/fasttext.html
-    * https://arxiv.org/abs/1607.04606v2 (paper)
-
 # Recurrent Neural Network
 RNN is a family of neural network models which is designed to model sequential data. The idea behind RNNs is to make use of sequential information. In a traditional neural network we assume that all inputs (and outputs) are independent of each other. But for many tasks that’s a bad idea. If you want to predict the next word in a sentence you better know which words came before it. RNNs are called recurrent because they perform the same task for every element of a sequence, with the output being depended on the previous computations. Another way to think about RNNs is that they have a “memory” which captures information about what has been calculated so far. In theory RNNs can make use of information in arbitrarily long sequences, but in practice they are limited to looking back a fixed number of steps (more on this later). Here is what a typical RNN looks like:
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im10.jpg) <br/>
 The above diagram shows an RNN being unrolled (or unfolded) into a full network. By unrolling we simply mean that we write out the network for the complete sequence. For example, if the sequence we care about is a sentence of 5 words, the network would be unrolled into a 5-layer neural network, one layer for each word. The formulas that govern the computation happening in a RNN are as follows:
- - x<sub>t</sub> is the input at time step tt. For example, x<sub>1</sub> could be a one-hot vector corresponding to the second word of a sentence.
+ - x<sub>t</sub> is the input at time step t. For example, x<sub>1</sub> could be a one-hot vector corresponding to the second word of a sentence.
  - s<sub>t</sub> is the hidden state at time step t. It’s the “memory” of the network. s<sub>t</sub> is calculated based on the previous hidden state and the input at the current step: s<sub>t</sub> = f(Ux<sub>t</sub> + Wx<sub>t</sub>). The function ff usually is a nonlinearity such as tanh or ReLU.  s<sub>-1</sub>, which is required to calculate the first hidden state, is typically initialized to all zeroes.
  - o<sub>t</sub> is the output at step t. For example, if we wanted to predict the next word in a sentence it would be a vector of probabilities across our vocabulary. o<sub>t</sub> = softmax(Vs<sub>t</sub>). <br/><br/>
 There are a few things to note here:
