@@ -223,8 +223,9 @@ After getting the input representation it is fed to the forward and backward LST
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/ulm_lr.png) <br/>
     * ***Gradual unfreezing***
         * Refers to unfreezing one layer per epoch, starting at the last (most specific) layer. Then, for each new epoch, one extra layer is added to the set of unfrozen layers, and these get to be fine-tuned in that epoch. <br/>
+
+* There are 3 steps in ULMFit as shown in below figure:
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im23.png) <br/>
-* There are 3 steps in ULMFit
     1. ***General-domain LM pretraining(Unsupervised)***: The LM is trained on a general-domain corpus to capture general features of the language in different layers.
     2. ***Target task LM fine-tunning(Unsupervised)***: Now that the model has captured the general features of the language. To make it useful for our domain-specific use case, we can fine-tune the paraments of LM using target task data. The distribution of the vocabulary in our data may differ from the pre-trained model. This process is a semi-supervised learning task. 
         * This step uses discriminative fine-tuning and slanted triangular learning rates. 
