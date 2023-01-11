@@ -3,29 +3,29 @@ It contains details about the different topics in Natural language Processing.
 * [TF-IDF](#TF-IDF)
 * [Conditional Random Field](#Conditional-Random-Field)
 * [Word Embeddings](#Word-Embeddings)
-    * [Word2vec(Skipgram)](#Word2vec(Skipgram))
+    * [Word2vec](#Word2vec)
     * [Glove](#Glove)
 * [Character level embeddings](#Character-level-embeddings)
     * [Fasttext](#Fasttext)
 * [Recurrent Neural Network](#Recurrent-Neural-Network)
-* [LSTM((Long Short Term Memory networks))](#LSTM((Long-Short-Term-Memory-networks)))
-* [ELMO((Embeddings from Language Models))](#ELMO((Embeddings-from-Language-Models)))
+* [LSTM](#LSTM)
+* [ELMO](#ELMO)
 * [Flair](#Flair)
 * [ULMFIT](#ULMFIT)
 * [Attention](#Attention)
 * [Transformer](#Transformer)
 * [BERT](#BERT)
 * [BERT limitations](#BERT-limitations)
-* [ALBERT(A lite BERT)](#ALBERT(A-lite-BERT))
+* [ALBERT](#ALBERT)
 * [DistilBERT](#DistilBERT)
 * [ROBERTA](#ROBERTA)
 * [XLNET](#XLNET)
-* [Sentence BERT(SBERT)](#Sentence-BERT(SBERT))
-* [GPT-1(Generative Pretraining)](#GPT-1(Generative-Pretraining))
+* [Sentence BERT](#Sentence-BERT)
+* [GPT-1](#GPT-1)
 * [GPT-2](#GPT-2)
 * [GPT-3](#GPT-3)
 * [ChatGPT](#ChatGPT)
-* [Prompt Engineering(in NLP)](#Prompt-Engineering(in-NLP))
+* [Prompt Engineering](#Prompt-Engineering)
 * [Choosing the right LM for your usecase](#Choosing-the-right-LM-for-your-usecase)
 
 # TF-IDF
@@ -97,7 +97,7 @@ It contains details about the different topics in Natural language Processing.
 # Word Embeddings
 Word embeddings are a type of word representation that allows words with similar meaning to have a similar representation. Word embeddings help in generating the distributed representation for text which are lower in dimension as compare to other text representation techniques like TF-IDF.
 One of the benefits of using dense and low-dimensional vectors is computational: the majority of neural network toolkits do not play well with very high-dimensional, sparse vectors. … The main benefit of the dense representations is generalization power: if we believe some features may provide similar clues, it is worthwhile to provide a representation that is able to capture these similarities.
-## Word2vec(Skipgram)
+## Word2vec
 * Word2Vec uses a trick in which we train a simple neural network with a single hidden layer to perform a certain task, but then we’re not actually going to use that neural network for the task we trained. nstead, the goal is actually just to learn the weights of the hidden layer–we’ll see that these weights are actually the “word vectors” that we’re trying to learn.
 * ***The Fake task***: Given a specific word in the middle of a sentence (the input word), look at the words nearby and pick one at random. The network is going to tell us the probability for every word in our vocabulary of being the “nearby word” that we chose. Here, "nearby" means there is actually a "window size" parameter to the algorithm. A typical window size might be 5, meaning 5 words behind and 5 words ahead (10 in total). The output probabilities are going to relate to how likely it is find each vocabulary word nearby our input word. For example, if you gave the trained network the input word “Soviet”, the output probabilities are going to be much higher for words like “Union” and “Russia” than for unrelated words like “watermelon” and “kangaroo”.
 * We’ll train the neural network to do this by feeding it word pairs found in our training documents. The below example shows some of the training samples (word pairs) we would take from the sentence “The quick brown fox jumps over the lazy dog.” I’ve used a small window size of 2 just for the example. The word highlighted in blue is the input word.
@@ -159,7 +159,7 @@ The lower the gradient is, the harder it is for the network to update the weight
     * https://dennybritz.com/posts/wildml/recurrent-neural-networks-tutorial-part-1/
     * http://karpathy.github.io/2015/05/21/rnn-effectiveness/
 
-# LSTM(Long Short Term Memory networks)
+# LSTM
 * LSTMs are explicitly designed to avoid the long-term dependency problem or vanishing gradient problem. The key to LSTMs is the cell state, the horizontal line running through the top of the diagram. The cell state is kind of like a conveyor belt. It runs straight down the entire chain, with only some minor linear interactions. It’s very easy for information to just flow along it unchanged.
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im15.png) <br/>
 * The LSTM does have the ability to remove or add information to the cell state, carefully regulated by structures called gates. Gates are a way to optionally let information through. They are composed out of a sigmoid neural net layer and a pointwise multiplication operation. The sigmoid layer outputs numbers between zero and one, describing how much of each component should be let through. A value of zero means “let nothing through,” while a value of one means “let everything through!”. An LSTM has three of these gates, to protect and control the cell state.
@@ -180,7 +180,7 @@ We multiply the old state by ft, forgetting the things we decided to forget earl
     * https://kikaben.com/long-short-term-memory/
     * https://weberna.github.io/blog/2017/11/15/LSTM-Vanishing-Gradients.html
 
-# ELMO(Embeddings from Language Models) 
+# ELMO
 ELMO achieves state-of-the-art performance on many popular tasks including question-answering, sentiment analysis, and named-entity extraction
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im20.gif) <br/>
 ELMo word vectors are computed on top of a two-layer bidirectional language model (biLM). This biLM model has two layers stacked together. Each layer has 2 passes — forward pass and backward pass. 
@@ -362,7 +362,7 @@ From the above function, it is clear that there is no dependency between learnin
 * It is not designed for semantic search(SBERT is better).
 * Many variations of BERT(like ROBERTA) found that NSP objective in BERT is not very effective.
 
-# ALBERT(A lite BERT)
+# ALBERT
 The main motivation behind ALBERT was to improve the training(training time) and results of BERT architecture by using different techniques such as factorization of embedding matrix, parameter sharing, and Inter sentence Coherence loss.
   1. ***Cross-layer Parameter sharing***: There are multiple ways to share parameters(in transformer network), e.g., only sharing FFN parameters across layers, or only sharing attention parameters. The default decision for ALBERT is to )share all parameters across layers. So, we can say that ALBERT have one encoder layer with different weight and apply that layer 12 times on the input. As a result, the large ALBERT model has about 18x fewer parameters compared to BERT-large. 
   2. ***Embedding Factorization*** : In BERT, as well as later modelling advancements like XLNet and RoBERTa, the WordPiece embedding size E and the hidden layer size H are tied together, i.e., E ≡ H, which is sub-optimal. If E=H, then increasing H increases the size of the embedding matrix, which has size V×E.
@@ -426,7 +426,7 @@ log P(New | is a city) + log P(York | is a city)
     - https://towardsdatascience.com/what-is-two-stream-self-attention-in-xlnet-ebfe013a0cf3
     - https://arxiv.org/pdf/1906.08237.pdf(paper)
 
-# Sentence BERT(SBERT)
+# Sentence BERT
 Sentence BERT is a modification of the standard pretrained BERT network that uses siamese and triplet networks to create sentence embeddings for each sentence that can then be compared using a cosine-similarity, making semantic search for a large number of sentences feasible (only requiring a few seconds of training time). <br/><br/>
 ***Issues with BERT for Sentence Similarity***: BERT uses a cross-encoder structure to calculate accurate sentence similarity. This meant that we would pass two sentences to BERT, add a classification head to the top of BERT — and use this to output a similarity score. <br/>
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im44.png) <br/>
@@ -448,7 +448,7 @@ With the original BERT (and other transformers), we can build a sentence embeddi
     - https://medium.com/dair-ai/tl-dr-sentencebert-8dec326daf4e
     - https://www.pinecone.io/learn/sentence-embeddings/
 
-# GPT-1(Generative Pretraining)
+# GPT-1
 GPT-1 is the first model in GPT family of models. It uses decoder portion of the transformer architecture. Authors in the GPT paper propose a semi-supervised model consisting two stages. The first stage is unsupervised pre-training of a high capacity language model on a large corpus of raw text. This stage is followed by a fine-tuning stage, where model is trained on specific NLP tasks with small labeled data. It also make use of task-aware input transformations during fine-tuning to achieve effective transfer while requiring minimal changes to the model architecture. This general task-agnostic model outperforms discriminatively trained models that use architectures specifically crafted for each task, significantly improving upon the state of the art in 9 out of the 12 tasks studied. 
 * ***Intuition***: In the first stage, the model is trained on a large text corpus of unlabeled data to predict the next word in the sentence. From previous model designs we know that bigger the text corpus, and longer the attention span (further out we have context for the word ), the better the prediction for the next word. Therefore, for the first stage is that the model is learning the language and as it develops a better understanding it is able to learn discriminative features ,which become useful in the subsequent fine-tuning step. <br/>
 In the second stage, the model is fine tuned using small labeled datasets on specific discriminative tasks. These tasks can include sentiment analysis, question answer, classification, similarity etc. Intuition for the second stage is that the model is able to use learnings from the previous unsupervised step, expand on and apply those learnings to a specific discriminative task
@@ -544,7 +544,7 @@ ChatGPT provides a significant improvement over its predecessor GPT-3. Similarly
     - https://arxiv.org/pdf/2203.02155.pdf (instructGPT paper)
 
 
-# Prompt Engineering(in NLP)
+# Prompt Engineering
 In a traditional supervised learning system for NLP, we take an input x, usually text  and predict an output y based on a model P(y|x;θ). y could be a label, text, or other variety of output. In order to learn the parameters θ of this model, we use a dataset containing pairs of inputs and outputs, and train a model to predict this conditional probability. The main issue with supervised learning is that in order to train a model P(y|x;θ), it is necessary to have supervised data for the task, which for many tasks cannot be found in large amounts. Prompt-based learning methods for NLP attempt to circumvent this issue by instead learning an LM that models the probability P(x;θ) of text x itself and using this probability to predict y, reducing or obviating the need for large supervised datasets.
 ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im56.png) <br/>
 - ***Why Prompts***?
