@@ -1,5 +1,5 @@
 # Natural Language Processing
-It contains details about the different topics in Natural language Processing.
+This repository contains the details and references for all NLP topics. Below is the list of topics:
 * [TF-IDF](#TF-IDF)
 * [Conditional Random Field](#Conditional-Random-Field)
 * [Word Embeddings](#Word-Embeddings)
