@@ -63,7 +63,7 @@ This repository contains the details and references for all NLP topics. Below is
         $$score(l/s) =\sum_{j=1}^m \sum_{i=1}^n λ_jf_j(s,i,l_i,l_{i-1})$$  <br/>
         (The first sum runs over each feature function j, and the inner sum runs over each position i of the sentence.) <br/>
         Finally, we can transform these scores into probabilities p(l|s) between 0 and 1 by exponentiating and normalizing:
-    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im1.PNG) <br/>
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im1.PNG) <br/>
 
     * ***Example Feature Functions*** <br/>
     So what do these feature functions look like? Examples of POS tagging features could include:
@@ -77,10 +77,10 @@ This repository contains the details and references for all NLP topics. Below is
     Let’s go back to the question of how to learn the feature weights in a CRF. One way, unsurprisingly, is to use gradient descent. <br/>
     Assume we have a bunch of training examples (sentences and associated part-of-speech labels). Randomly initialize the weights of our CRF model. To shift these randomly initialized weights to the correct ones, for each training example… <br/>
       - Go through each feature function fi, and calculate the gradient of the log probability of the training example with respect to
-      ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im2.PNG) <br/>
+      ![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im2.PNG) <br/>
       - Note that the first term in the gradient is the contribution of feature fi under the true label, and the second term in the gradient is the expected contribution of feature fi under the current model. This is exactly the form you’d expect gradient ascent to take.
       - Move λi in the direction of the gradient:
-        ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im3.PNG) <br/>
+        ![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im3.PNG) <br/>
       where α is some learning rate.
       - Repeat the previous steps until some stopping condition is reached (e.g., the updates fall below some threshold).
     
@@ -99,16 +99,16 @@ One of the benefits of using dense and low-dimensional vectors is computational:
 * Word2Vec uses a trick in which we train a simple neural network with a single hidden layer to perform a certain task, but then we’re not actually going to use that neural network for the task we trained. nstead, the goal is actually just to learn the weights of the hidden layer–we’ll see that these weights are actually the “word vectors” that we’re trying to learn.
 * ***The Fake task***: Given a specific word in the middle of a sentence (the input word), look at the words nearby and pick one at random. The network is going to tell us the probability for every word in our vocabulary of being the “nearby word” that we chose. Here, "nearby" means there is actually a "window size" parameter to the algorithm. A typical window size might be 5, meaning 5 words behind and 5 words ahead (10 in total). The output probabilities are going to relate to how likely it is find each vocabulary word nearby our input word. For example, if you gave the trained network the input word “Soviet”, the output probabilities are going to be much higher for words like “Union” and “Russia” than for unrelated words like “watermelon” and “kangaroo”.
 * We’ll train the neural network to do this by feeding it word pairs found in our training documents. The below example shows some of the training samples (word pairs) we would take from the sentence “The quick brown fox jumps over the lazy dog.” I’ve used a small window size of 2 just for the example. The word highlighted in blue is the input word.
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im6.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im6.png) <br/>
 The network is going to learn the statistics from the number of times each pairing shows up. So, for example, the network is probably going to get many more training samples of (“Soviet”, “Union”) than it is of (“Soviet”, “Sasquatch”). When the training is finished, if you give it the word “Soviet” as input, then it will output a much higher probability for “Union” or “Russia” than it will for “Sasquatch”.
 * ***Model Details***
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im7.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im7.png) <br/>
 The above is the architecture of 1 hidden layer neural network. 
 * Let's consider we have 10,000 uinque words in the vocab. Here we represent any input work like "machine" as a one-hot vector. The output of the network is a single vector (also with 10,000 components) containing, for every word in our vocabulary, the probability that a randomly selected nearby word is that vocabulary word. There is no activation function on the hidden layer neurons, but the output neurons use softmax.
 * When training this network on word pairs, the input is a one-hot vector representing the input word and the training output is also a one-hot vector representing the output word. But when you evaluate the trained network on an input word, the output vector will actually be a probability distribution (i.e., a bunch of floating point values, not a one-hot vector).
 * ***Hidden Layer***
     * Let's say we are trying to learn word vectors with 300 dimension. So the hidden layer is going to be represented by a weight matrix with 10,000 rows (one for every word in our vocabulary) and 300 columns (one for every hidden neuron). If you look at the rows of this weight matrix, these are actually what will be our word vectors!
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im8.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im8.png) <br/>
 So the end goal of all of this is really just to learn this hidden layer weight matrix – the output layer we’ll just toss when we’re done!. Here the hidden layer of this model is really just operating as a lookup table. The output of the hidden layer is just the “word vector” for the input word.
 * ***Output layer***
     * The 1 x 300 word vector for “machine” then gets fed to the output layer. The output layer is a softmax regression classifier. Each output neuron (one per word in our vocabulary!) will produce an output between 0 and 1, and the sum of all these output values will add up to 1. Specifically, each output neuron has a weight vector which it multiplies against the word vector from the hidden layer, then it applies the function exp(x) to the result. Finally, in order to get the outputs to sum up to 1, we divide this result by the sum of the results from all 10,000 output nodes.
@@ -127,12 +127,12 @@ THe GloVe algorithm consists of following steps: <br/>
   1. Collect word co-occurence statistics in a form of word co-ocurrence matrix X. Each element Xij of such matrix represents how often word i appears in context of word j. Usually we scan our corpus in the following manner: for each term we look for context terms within some area defined by a window_size before the term and a window_size after the term. Also we give less weight for more distant words, usually using this formula:
                                 decay=1/offset
   2. Define soft constraints for each word pair:
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im_gl1.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im_gl1.png) <br/>
   Here wi - vector for the main word, wj - vector for the context word, bi, bj are scalar biases for the main and context words.
   3. Define a cost function
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im_gl2.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im_gl2.png) <br/>
 Here f is a weighting function which help us to prevent learning only from extremely common word pairs. The GloVe authors choose the following function:
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im_gl3.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im_gl3.png) <br/>
 * Details
     * https://cran.r-project.org/web/packages/text2vec/vignettes/glove.html
     * https://jonathan-hui.medium.com/nlp-word-embedding-glove-5e7f523999f6 (best)
@@ -140,7 +140,7 @@ Here f is a weighting function which help us to prevent learning only from extre
 
 # Recurrent Neural Network
 RNN is a family of neural network models which is designed to model sequential data. The idea behind RNNs is to make use of sequential information. In a traditional neural network we assume that all inputs (and outputs) are independent of each other. But for many tasks that’s a bad idea. If you want to predict the next word in a sentence you better know which words came before it. RNNs are called recurrent because they perform the same task for every element of a sequence, with the output being depended on the previous computations. Another way to think about RNNs is that they have a “memory” which captures information about what has been calculated so far. In theory RNNs can make use of information in arbitrarily long sequences, but in practice they are limited to looking back a fixed number of steps (more on this later). Here is what a typical RNN looks like:
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im10.jpg) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im10.jpg) <br/>
 The above diagram shows an RNN being unrolled (or unfolded) into a full network. By unrolling we simply mean that we write out the network for the complete sequence. For example, if the sequence we care about is a sentence of 5 words, the network would be unrolled into a 5-layer neural network, one layer for each word. The formulas that govern the computation happening in a RNN are as follows:
  - x<sub>t</sub> is the input at time step t. For example, x<sub>1</sub> could be a one-hot vector corresponding to the second word of a sentence.
  - s<sub>t</sub> is the hidden state at time step t. It’s the “memory” of the network. s<sub>t</sub> is calculated based on the previous hidden state and the input at the current step: s<sub>t</sub> = f(Ux<sub>t</sub> + Wx<sub>t</sub>). The function ff usually is a nonlinearity such as tanh or ReLU.  s<sub>-1</sub>, which is required to calculate the first hidden state, is typically initialized to all zeroes.
@@ -152,11 +152,11 @@ There are a few things to note here:
 
 * ***Vanishing Gradient***
 In RNN, the information travels through time which means that information from previous time points is used as input for the next time points. Cost function calculation or error is done at each point of time. Basically, during the training, your cost function compares your outcomes (red circles on the image below) to your desired output. As a result, you have these values throughout the time series, for every single one of these red circles. 
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im13.PNG) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im13.PNG) <br/>
 Let’s focus on one error term et. You’ve calculated the cost function et, and now you want to propagate your cost function back through the network because you need to update the weights.
 Essentially, every single neuron that participated in the calculation of the output, associated with this cost function, should have its weight updated in order to minimize that error. And the thing with RNNs is that it’s not just the neurons directly below this output layer that contributed but all of the neurons far back in time. So, you have to propagate all the way back through time to these neurons. The problem relates to updating wrec (weight recurring) – the weight that is used to connect the hidden layers to themselves in the unrolled temporal loop.
 For instance, to get from xt-3 to xt-2 we multiply xt-3 by wrec. Then, to get from xt-2 to xt-1 we again multiply xt-2 by wrec. So, we multiply with the same exact weight multiple times, and this is where the problem arises: when you multiply something by a small number, your value decreases very quickly. As we know, weights are assigned at the start of the neural network with the random values, which are close to zero, and from there the network trains them up. But, when you start with wrec close to zero and multiply xt, xt-1, xt-2, xt-3, … by this value, your gradient becomes less and less with each multiplication.
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im14.PNG) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im14.PNG) <br/>
 * ***What does this mean for the network?***
 The lower the gradient is, the harder it is for the network to update the weights and the longer it takes to get to the final result. For instance, 1000 epochs might be enough to get the final weight for the time point t, but insufficient for training the weights for the time point t-3 due to a very low gradient at this point. However, the problem is not only that half of the network is not trained properly. The output of the earlier layers is used as the input for the further layers. Thus, the training for the time point t is happening all along based on inputs that are coming from untrained layers. So, because of the vanishing gradient, the whole network is not being trained properly. For the vanishing gradient problem, the further you go through the network, the lower your gradient is and the harder it is to train the weights, which has a domino effect on all of the further weights throughout the network.
 * References:
@@ -167,18 +167,18 @@ The lower the gradient is, the harder it is for the network to update the weight
 
 # LSTM
 * LSTMs are explicitly designed to avoid the long-term dependency problem or vanishing gradient problem. The key to LSTMs is the cell state, the horizontal line running through the top of the diagram. The cell state is kind of like a conveyor belt. It runs straight down the entire chain, with only some minor linear interactions. It’s very easy for information to just flow along it unchanged.
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im15.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im15.png) <br/>
 * The LSTM does have the ability to remove or add information to the cell state, carefully regulated by structures called gates. Gates are a way to optionally let information through. They are composed out of a sigmoid neural net layer and a pointwise multiplication operation. The sigmoid layer outputs numbers between zero and one, describing how much of each component should be let through. A value of zero means “let nothing through,” while a value of one means “let everything through!”. An LSTM has three of these gates, to protect and control the cell state.
 * The first step in our LSTM is to decide what information we’re going to throw away from the cell state. This decision is made by a sigmoid layer called the “forget gate layer.” It looks at ht−1 and xt, and outputs a number between 0 and 1 for each number in the cell state Ct−1. A 1 represents “completely keep this” while a 0 represents “completely get rid of this.” 
 * Let’s go back to our example of a language model trying to predict the next word based on all the previous ones. In such a problem, the cell state might include the gender of the present subject, so that the correct pronouns can be used. When we see a new subject, we want to forget the gender of the old subject.
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im16.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im16.png) <br/>
 * The next step is to decide what new information we’re going to store in the cell state. This has two parts. First, a sigmoid layer called the “input gate layer” decides which values we’ll update. Next, a tanh layer creates a vector of new candidate values, C~t, that could be added to the state. In the next step, we’ll combine these two to create an update to the state. In the example of our language model, we’d want to add the gender of the new subject to the cell state, to replace the old one we’re forgetting.
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im17.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im17.png) <br/>
 * It’s now time to update the old cell state, Ct−1, into the new cell state Ct. The previous steps already decided what to do, we just need to actually do it.
 We multiply the old state by ft, forgetting the things we decided to forget earlier. Then we add it∗C~t. This is the new candidate values, scaled by how much we decided to update each state value. In the case of the language model, this is where we’d actually drop the information about the old subject’s gender and add the new information, as we decided in the previous steps.
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im18.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im18.png) <br/>
 * Finally, we need to decide what we’re going to output. This output will be based on our cell state, but will be a filtered version. First, we run a sigmoid layer which decides what parts of the cell state we’re going to output. Then, we put the cell state through tanh (to push the values to be between −1 and 1) and multiply it by the output of the sigmoid gate, so that we only output the parts we decided to. For the language model example, since it just saw a subject, it might want to output information relevant to a verb, in case that’s what is coming next. For example, it might output whether the subject is singular or plural, so that we know what form a verb should be conjugated into if that’s what follows next.
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im19.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im19.png) <br/>
 * ***How LSTM solves vanishing gradient problem***
     * https://weberna.github.io/blog/2017/11/15/LSTM-Vanishing-Gradients.html
 * References:
@@ -188,7 +188,7 @@ We multiply the old state by ft, forgetting the things we decided to forget earl
 
 # ELMO
 ELMO achieves state-of-the-art performance on many popular tasks including question-answering, sentiment analysis, and named-entity extraction
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im20.gif) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im20.gif) <br/>
 ELMo word vectors are computed on top of a two-layer bidirectional language model (biLM). This biLM model has two layers stacked together. Each layer has 2 passes — forward pass and backward pass. 
 * The architecture above uses a character-level convolutional neural network (CNN) to represent words of a text string into raw word vectors
 * These raw word vectors act as inputs to the first layer of biLM
@@ -215,10 +215,10 @@ FLAIR library provides powerful state-of-the-art contextual word embeddings. It 
 * Using Flair you can also combine different word embeddings together to get better results.
 Flair supports a number of languages.
 In this word embedding each of the letters in the words are sent to the Character Language Model and then the input representation is taken out from the forward and backward LSTMs.
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im21.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im21.png) <br/>
 The input representation for the word ‘Washington’ is been considered based on the context before the word ‘Washington’. The first and last character states of each word is taken in order to generate the word embeddings.
 You can see that for the word ‘Washington’ the red mark is the forward LSTM output and the blue mark is the backward LSTM output. Both forward and backward contexts are concatenated to obtain the input representation of the word ‘Washington’.
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im22.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im22.png) <br/>
 After getting the input representation it is fed to the forward and backward LSTM to get the particular task that you are dealing with. In the diagram mentioned we are trying to get the NER.
 * References:
     * https://github.com/flairNLP/flair
@@ -232,12 +232,12 @@ After getting the input representation it is fed to the forward and backward LST
         * For example: use lr=0.01 for the last (most specific) layer, lr=0.005  for the second-last, etc.
     * ***Slanted triangular learning rates***
         * Slanted Triangular Learning Rate is a learning rate schedule; the maximum learning rate (last layer) grows linearly until it maxes out and then starts to be lowered
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/ulm_lr.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/ulm_lr.png) <br/>
     * ***Gradual unfreezing***
         * Refers to unfreezing one layer per epoch, starting at the last (most specific) layer. Then, for each new epoch, one extra layer is added to the set of unfrozen layers, and these get to be fine-tuned in that epoch. <br/>
 
 * There are 3 steps in ULMFit as shown in below figure:
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im23.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im23.png) <br/>
     1. ***General-domain LM pretraining(Unsupervised)***: The LM is trained on a general-domain corpus to capture general features of the language in different layers.
     2. ***Target task LM fine-tunning(Unsupervised)***: Now that the model has captured the general features of the language. To make it useful for our domain-specific use case, we can fine-tune the paraments of LM using target task data. The distribution of the vocabulary in our data may differ from the pre-trained model. This process is a semi-supervised learning task. 
         * This step uses discriminative fine-tuning and slanted triangular learning rates. 
@@ -255,23 +255,23 @@ After getting the input representation it is fed to the forward and backward LST
     * In Encoder-docoder model, the encoder LSTM is used to process the entire input sentence and encode it into a context vector, which is the last hidden state of the LSTM/RNN. This is expected to be a good summary of the input sentence. All the intermediate states of the encoder are ignored, and the final state id supposed to be the initial hidden state of the decoder
     * The decoder LSTM or RNN units produce the words in a sentence one after another
     * RNNs cannot remember longer sentences and sequences due to the vanishing/exploding gradient problem. LSTM tries to solve vanishing gradient but still it's not able to solve completely. Although an LSTM is supposed to capture the long-range dependency better than the RNN, it tends to become forgetful in specific cases. Another problem is that there is no way to give more importance to some of the input words compared to others while translating the sentence. 
-    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im24.png) <br/>
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im24.png) <br/>
 * ***Attention mechanism***
     * Attention mechanism tries to overcome the information bottleneck of the intermediary state by allowing the decoder model to access all the hidden states, rather than a single vector — aka intermediary state — build out of the encoder’s last hidden state, while predicting each output.
-    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im25.png) <br/>
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im25.png) <br/>
     The input to a cell in decoder now gets the following values:
     * The previous hidden state of the decoder model Hₖ-₁.
     * The previous output of decoder model Yₖ-₁.
     * A context vector Cₖ— a weighted sum of all encoder hidden states(hⱼ’s) aka annotations.
-    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im26.png) <br/>
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im26.png) <br/>
     The context vector or intermediate vector ci for the output word yi is generated using the weighted sum of the annotations:
-    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im27.png) <br/>
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im27.png) <br/>
     The weights αij are computed by a softmax function given by the following equation: <br/>
-    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im28.png) <br/>
-    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/image29.png) <br/>
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im28.png) <br/>
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images1/image29.png) <br/>
     eij is the output score of a feedforward neural network described by the function a that attempts to capture the alignment between input at j and output at i.
     * The global alignment weights are important because they tell us which annotations(s) to focus on for the next output. The weights will and should vary in each time steps of the decoder model. They are calculated by using a feed forward neural network.
-    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im30.png) <br/>
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im30.png) <br/>
     While predicting the next step, weights are high — shown in white — only for a few words at a time. No more than 3–4 words have high attention for a given output word.
     * References:
         * https://medium.com/analytics-vidhya/https-medium-com-understanding-attention-mechanism-natural-language-processing-9744ab6aed6a
@@ -285,11 +285,11 @@ After getting the input representation it is fed to the forward and backward LST
 * Another advantage of transformers is their parallelizability. Unlike RNNs, which must be processed sequentially, the self-attention mechanisms in transformers allow the model to simultaneously attend to all the input tokens, making it possible to parallelize the computation across multiple devices. The feedforward layer computations can also be parallelized because each word is processed separately in the FNN layers. This has made it possible to train very large transformer models, such as BERT and GPT-3, which have achieved state-of-the-art results on a wide range of NLP tasks.
 * Another key innovation of the transformer architecture is the use of multi-headed attention. This allows the model to attend to multiple input subspaces at the same time, which can be useful for capturing complex relationships betweed words in the sentence.
 * ***Architecture***
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im31.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im31.png) <br/>
 We will discuss each component in the architecture:
   - ***Self Attention***:
     - Steps:
-    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im33.png) <br/>
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im33.png) <br/>
       - The word embedding is transformed into three separate matrices — queries, keys, and values — via multiplication of the word embedding against three matrices with learned weights. These vectors are trained and updated during the training process.
       - Consider this sentence- “transformers are great”. To calculate the self-awareness of the first word "transformers”, calculate the scores of all the words in the phrase related to transformers”. This score determines the importance of other words when encoding a particular word in the input sequence.
       - The score for the first word is calculated by taking the dot product of the Query vector (q1) with the keys vectors (k1, k2, k3) of all the words
@@ -299,7 +299,7 @@ We will discuss each component in the architecture:
       - Same process is done for all the words
     - ***Self Attention in Decoder***: In the decoder part, the self attention is mostly same as in encoder except the scope is limited to the words that occur before a given word. This prevents any information leaks during the training of the model. This is done by masking the words that occur after it for each step. So for step 1, only the first word of the output sequence is NOT masked, for step 2, the first two words are NOT masked and so on.
     In the Transformer architecture, self-awareness is calculated independently of each other, not just once, but multiple times in parallel. Therefore, it is called multi-head attention. The outputs are concatenated and transformed linearly, as shown in the following figure. <br/>
-    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im32.png) <br/>
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im32.png) <br/>
   - ***Encoder-Decoder Attention***: There is an attention layer between encoder and decoder that helps the decoder focus on relevant parts of the input sentence(similary to what attention does in seq2seq models). The “Encoder-Decoder Attention” layer works just like multiheaded self-attention, except it creates its Queries matrix from the layer below it, and takes the Keys and Values matrix from the output of the encoder stack.
   
   - ***Feedforward neural network(in encoder and decoder block)***: Each word is processed in the FNN separately. This allows parallelization. Each layer processes the input data and produces an output, which is then passed on to the next layer. Without normalization, the inputs to each layer can vary widely in scale, which can make it difficult for the model to learn effectively. Layer normalization addresses this issue by normalizing the inputs to each layer across the feature dimensions. This helps to stabilize the learning process and improve the model's ability to generalize to new data.
@@ -319,13 +319,13 @@ We will discuss each component in the architecture:
 
 # BERT
 - BERT, which stands for "Bidirectional Encoder Representations from Transformers," achieves a state-of-the-art performance on a wide range of natural language processing tasks, including language translation, question answering, and text classification. BERT is categorized as autoEncoder(AE) language. The AE language model aims to reconstruct the original data from corrupted input. The corrupted input means we use [MASK] to replace the original token into in the pre-train phase. It is a "bidirectional" model as it is able to consider the context of a word in both directions which allows it to better understand the nuances and relationships between words in a sentence
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im34.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im34.png) <br/>
 There are 2 steps in BERT:
   1. Semi-supervised training on large amount of text data(books,wikipedia. etc)
   2. Supervised training on domain specific task with a labelled data.
 We can also use pretrained BERT model(skip the first step) and finetuned on task specific dataset.
 * ***Architecture***
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im35.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im35.png) <br/>
   - Since BERT’s goal is to generate a language representation model, it only needs the encoder part
     - BERT-Base, Uncased: 12-layers, 768-hidden, 12-attention-heads, 110M parameters
     - BERT-Large, Uncased: 24-layers, 1024-hidden, 16-attention-heads, 340M parameters
@@ -336,7 +336,7 @@ The input to the encoder for BERT is a sequence of tokens, which are first conve
   1. ***Token embeddings***: A [CLS] token is added to the input word tokens at the beginning of the first sentence and a [SEP] token is inserted at the end of each sentence.
   2. ***Segment embeddings***: A marker indicating Sentence A or Sentence B is added to each token. This allows the encoder to distinguish between sentences.
   3. ***Positional embeddings***: A positional embedding is added to each token to indicate its position in the sentence.
-  ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im36.png) <br/>
+  ![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im36.png) <br/>
   Essentially, the Transformer stacks a layer that maps sequences to sequences, so the output is also a sequence of vectors with a 1:1 correspondence between input and output tokens at the same index. 
   * The first token [CLS] is used in classification tasks as an aggregate of the entire sequence representation. It is ignored in non-classification tasks.
   * For single text sentence tasks, this [CLS] token is followed by the WordPiece tokens and the separator token – [SEP].
@@ -346,11 +346,11 @@ The input to the encoder for BERT is a sequence of tokens, which are first conve
   The BERT model is pretrained on two tasks simultaneously:
   1. ***Masked LM(MLM)***: Randomly mask out 15% of the words in the input - replacing them with a
     [MASK] token - run the entire sequence through the BERT attention based encoder and then predict only the masked words, based on the context provided by the other non-masked words in the sequence. Beyond masking 15% of the input, BERT also mixes things a bit in order to improve how the model later fine-tunes. Sometimes it randomly replaces a word with another word and asks the model to predict the correct word in that position.
-    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im37.png) <br/>
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im37.png) <br/>
   2. ***Next Sentence Prediction(NSP)***: In order to understand relationship between two sentences, BERT training process also uses next sentence prediction. A pre-trained model with this kind of    understanding is relevant for tasks like question answering. During training the model gets as input pairs of sentences and it learns to predict if the second sentence is the next sentence in the original text as well.
-   ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im38.png) <br/>
+   ![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im38.png) <br/>
 * ***Task Specific Models***: The BERT paper shows a number of ways to use BERT for different tasks.
-   ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im39.png) <br/> 
+   ![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im39.png) <br/> 
 We can use also use BERT for feature extraction just like ELMO.   
 * References:
     * https://jalammar.github.io/illustrated-bert/
@@ -386,7 +386,7 @@ The main motivation behind ALBERT was to improve the training(training time) and
 # DistilBERT
   DistillBERT is a smaller, faster, and lighter version of BERT which is designed to be more resource-efficient, easier to train and faster inference than BERT, while still maintaining a high level of performance. Knowledge distillation is leveraged during the pre-training phase and it has 40% fewer parameters than BERT, while retaining 97% of its language understanding capabilities and being 60% faster and more efficient to run and deploy in a production environment
   - ***Knowledge distillation and training loss***: In the teacher-student training, we train a student network to mimic the full output distribution of the teacher network (its knowledge). Rather than training with a cross-entropy over the hard targets (one-hot encoding of the gold class), we transfer the knowledge from the teacher to the student with a cross-entropy over the soft targets (probabilities of the teacher). 
-  ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im40.png) <br/>
+  ![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im40.png) <br/>
   This loss is a richer training signal since a single example enforces much more constraint than a single hard target. It is also call distillation loss(L_ce).
   The final training objective is a linear combination of the distillation loss L_ce with the supervised training loss, in our case the masked language modeling loss L_mlm. We found it beneficial to add a cosine embedding loss (Lcos) which will tend to align the directions of the student and teacher hidden states vectors.
   - ***Student architecture and Initialization***: It has the same general architecture as BERT. The token-type embeddings and the pooler are removed while the number of layers is reduced by a factor of 2. Most of the operations used in the Transformer architecture (linear layer and layer normalisation) are highly optimized in modern linear algebra frameworks and our investigations showed that variations on the last dimension of the tensor (hidden size dimension) have a smaller impact on computation efficiency (for a fixed parameters budget) than variations on other factors like the number of layers. Thus Number of layers are reduced in the architecture.
@@ -412,15 +412,15 @@ The main motivation behind ALBERT was to improve the training(training time) and
 # XLNET
 XLNet is a generalized autoregressive pretraining method which was created to address the shortcomings of the autoencoding method of pretraining used by BERT and other popular language models. XLnet is an extension of the Transformer-XL model. It uses permutative language modeling to create a bidirectional contexts. In Permutative language modeling(PLM) autoregressive model is trained on all possible permutation of words in a sentence. It integrates the idea of auto-regressive models and bi-directional context modeling, yet overcoming the disadvantages of BERT. It is currently the SOTA for text classification. XLNET includes following ideas to overcome the shortcomings in the BERT:
 - ***Permutation Language Modeling (PLM)***: PLM is the idea of capturing bidirectional context by training an autoregressive model on all possible permutation of words in a sentence. Instead of fixed left-right or right-left modeling, XLNET maximizes expected log likelihood over all possible permutations of the sequence. In expectation, each position learns to utilize contextual information from all positions thereby capturing bidirectional context. No [MASK] is needed and input data need not be corrupted.
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im41.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im41.png) <br/>
 The above diagram illustrates PLM. Let us consider that we are learning x3 (the token at the 3rd position in the sentence). PLM trains an autoregressive model with various permutations of the tokens in the sentence, so that in the end of all such permutations, we would have learnt x3, given all other words in the sentence. In the above illustration, we can see that the next layer takes as inputs only the tokens preceding x3 in the permutation sequence. This way, autoregression is also achieved.
 - ***Two Stream Self Attention***: 
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im42.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im42.png) <br/>
 It contains two kind of self-attention. One is the content stream attention, which is the standard self-attention in Transformer. Another is the query stream attention. XLNet introduces it to replace the [MASK] token in BERT. For example, if BERT wants to predict x3 with knowledge of the context words x1 and x2, it can use [MASK] to represent the x3 token. The [MASK] is just a placeholder. And the embedding of x1 and x2 contains the position information to help the model to “know” [MASK] is x3. <br/>
 In XLNET, One token x3 will server two kinds of roles. When it is used as content to predict other tokens, we can use the content representation (learned by content stream attention) to represent x3. But if we want to predict x3, we should only know its position and not its content. That’s why XLNet uses query representation (learned by query stream attention) to preserve context information before x3 and only the position information of x3.<br/>
 In order to intuitively understand the Two-Stream Self-Attention, we can just think XLNet replace the [MASK] in BERT with query representation. They just choose different approaches to do the same thing. <br/> <br/>
 ***Comparison between XLNET and BERT***: For example, consider the line “New York is a city” and that we need to predict “New York”. Let us assume that the current permutation is
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im43.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im43.png) <br/>
 BERT would predict the tokens 4 and 5 independent of each other. Whereas, XLNET, being an autoregressive model, predicts in the order of the sequence. i.e., first predicts token 4 and then predicts token 5. In this case, XLNET would compute
 log P(New | is a city) + log P(York | New, is a city)
 whereas BERT would reduce to
@@ -435,12 +435,12 @@ log P(New | is a city) + log P(York | is a city)
 # Sentence BERT
 Sentence BERT is a modification of the standard pretrained BERT network that uses siamese and triplet networks to create sentence embeddings for each sentence that can then be compared using a cosine-similarity, making semantic search for a large number of sentences feasible (only requiring a few seconds of training time). <br/><br/>
 ***Issues with BERT for Sentence Similarity***: BERT uses a cross-encoder structure to calculate accurate sentence similarity. This meant that we would pass two sentences to BERT, add a classification head to the top of BERT — and use this to output a similarity score. <br/>
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im44.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im44.png) <br/>
 The above architecture produces very accurate similarity scores (better than SBERT), but it’s not scalable. If we wanted to perform a similarity search through a small 100K sentence dataset, we would need to complete the cross-encoder inference computation 100K times. <br/>
 Ideally, we need to pre-compute sentence vectors that can be stored and then used whenever required. If these vector representations are good, all we need to do is calculate the cosine similarity between each. <br/>
 With the original BERT (and other transformers), we can build a sentence embedding by averaging the values across all token embeddings output by BERT (if we input 512 tokens, we output 512 embeddings). Alternatively, we can use the output of the first [CLS] token (a BERT-specific token whose output embedding is used in classification tasks). Using one of these two approaches can give us sentence embeddings but the accuracy is not good and is worse than using averaged GLOVE algorithms. The solution is SBERT. <br/> <br/>
 ***SBERT Model***: SBERT is similar to BERT except it drops the final classification head, and processes one sentence at a time. SBERT then uses mean pooling on the final output layer to produce a sentence embedding. Unlike BERT, SBERT is fine-tuned on sentence pairs using a siamese architecture ) to update the weights such that the produced sentence embeddings are semantically meaningful and can be compared with cosine-similarity. We can think of this as having two identical BERTs in parallel that share the exact same network weights(single model used multiple times).
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/sbert.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/sbert.png) <br/>
 ***Dataset used***: The Stanford Natural Language Inference (SNLI) dataset and the Multi-Genre NLI (MG-NLI) dataset is combined to create a collection of 1.000.000 sentence pairs. The training task posed by this dataset is to predict the label of each pair, which can be one of “contradiction”, “entailment” or “neutral”. <br/> <br/>
 ***Objective functions***: In SBERT, multiple objective functions are tried:
   1. ***Classification Objective Function***: We concatenate the sentence embeddings u and v with the element-wise difference |u−v| and multiply it with the trainable weight Wt of dim 3n× k. Cross entrophy loss is used as the objective function. The structure is given in figure 1.
@@ -463,10 +463,10 @@ In the second stage, the model is fine tuned using small labeled datasets on spe
     - ***Supervised fine-tuning***: Model was trained on textual entailment (contradiction or neutral), question answering, semantic similarity and text classification tasks. Hyper-parameter settings from unsupervised step was largely used as-is, and 3 epochs of training was found to be sufficient for most cases. <br/>
     Model was able to pre-train in unsupervised step and transfer the learnings to specific supervised discriminative tasks.
     - ***Discriminative Tasks***: Previous models typically used task specific architectures (fine-tuned models) on top of generic models/learned representations. This introduced a lot of task specific customization and additional architecture components. Instead, in this model the data for different tasks were converted into ordered sequence using delimiter, start & extract tokens (fitting to its 512 contiguous input tokens) to avoid tasks specific customization for fine-tuning.
-    ![](https://github.com/tikna123/natural-language-processing/blob/main/images/im47.png) <br/>
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im47.png) <br/>
     Fine tuning stage took data in a specific ordered format to avoid tasks specific customization in architecture.
 * ***Layers Transferred***: Authors analyzed the impact of transferring variable number of layers from unsupervised pre-training stage to supervised tasks. They found that transferring embeddings improved performance by up to 9% on the target layer — indicating that each layer in the pre-trained model contains useful functionality for solving target tasks.
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im48.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im48.png) <br/>
 Each layer in the unsupervised pre-trained model contains useful functionality for solving target tasks.
 * ***Zero Shots Learning***: Authors performed series of tests using generative model (Unsupervised learning stage)without the supervised fine-tuning (Second stage) step for variety of discriminative tasks. They found that the performance is stable and steadily increases with training, suggesting that generative pre-training stage learns wide range of task relevant functionality. <br/>
 Generative pre-training stage learns wide range of task relevant functionality and possibly can be employed in a few or zero shot learning setting.
@@ -477,7 +477,7 @@ Generative pre-training stage learns wide range of task relevant functionality a
 # GPT-2
 GPT-2 has no major architecture changes but much larger model than GPT-1 to learn even stronger language model. ALso, GPT-2 is trained using a new larger dataset of millions of webpages called WebText. GPT-2 zero-shots performance matched state of the art on 7 out of 8 tested language model datasets used in the study.
 * ***Model architecture***: 
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im49.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im49.png) <br/>
 GPT-2 had 1.5 billion parameters. which was 10 times more than GPT-1 (117M parameters). Major differences from GPT-1 were:
   - GPT-2(Extra large) had 48 layers and used 1600 dimensional vectors for word embedding.
   - Larger vocabulary of 50,257 tokens was used.
@@ -500,12 +500,12 @@ The purpose of GPT-3 was to make language processing more powerful and faster th
 The need for a large dataset of labeled examples for every new task limits the applicability of language models. There exists a very wide range of possible useful language tasks, encompassing anything from correcting grammar, to generating examples of an abstract concept, to critiquing a short story. For many of these tasks it is difficult to collect a large supervised training dataset, especially when the process must be repeated for every new task. <br/>
 The potential to exploit spurious correlations in training data fundamentally grows with the expressiveness of the model and the narrowness of the training distribution. This can create problems for the pre-training plus fine-tuning paradigm, where models are designed to be large to absorb information during pre-training, but are then fine-tuned on very narrow task distributions. The goal of GPT-3 is to eliminate the fine-tuning step.<br/>
 Also, Most of the language tasks does not require large supervised datasets to learn– a brief directive in natural language (e.g. “please tell me if this sentence describes something happy or something sad”) or at most a tiny number of demonstrations (e.g. “here are two examples of people acting brave; please give a third example of bravery”) is often sufficient to enable a human to perform a new task to at least a reasonable degree of competence. 
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im50.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im50.png) <br/>
 - ***Meta learning(in-context learning)***: One potential route towards addressing the above discussed issue is meta-learning - which in the context of language models means the model develops a broad set of skills and pattern recognition abilities at the training time and then uses those abilities at inference time to rapidly adapt to or recognize the desired task. Meta learning or in-context learning describes the inner loop of this process, which occurs within the forward-pass upon each sequence. The sequences in this diagram are not intended to be representative of the data a model would see during pre-training, but are intended to show that there are sometimes repeated sub-tasks embedded within a single sequence. It uses the text input of a pretrained language model as a form of task specification: the model is conditioned on a natural language instruction and/or a few demonstrations of the task and is then expected to complete further instances of the task simply by predicting what comes next.
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im51.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im51.png) <br/>
 - ***Few-shot, one-shot and zero-shot setting***: As discussed earlier, few, one and zero-shot settings are specialised cases of zero-shot task transfer. In few-shot setting, the model is provided with task description and as many examples as fit into the context window of model. In one-shot setting the model is provided exactly one example and in zero-shot setting no example is provided. With increase in capacity of model, few, one and zero-shot capability of model also improves.
 
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im52.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im52.png) <br/>
 As the number of examples and model size increased, model accuracy increased as well. Broadly, On NLP tasks GPT-3 showed promising results in the zero & one shot setting, and in the few shots setting sometimes even surpassed state of the art results. Also, gap in accuracy increases between One, Zero and Few Shots settings as model size increases, suggesting larger models are better meta-learners.
 - ***Dataset***: GPT-3 was trained on a mix of five different corpora, each having certain weight assigned to it. High quality datasets were sampled more often, and model was trained for more than one epoch on them. The five datasets used were Common Crawl, WebText2, Books1, Books2 and Wikipedia.
 - ***Model Architecture***: The architecture of GPT-3 is same as GPT-2. Few major differences from GPT-2 are:
@@ -536,15 +536,15 @@ ChatGPT provides a significant improvement over its predecessor GPT-3. Similarly
     1. ***Supervised fine-tuning(SFT) step***: A pre-trained language model is fine-tuned on a relatively small amount of demonstration data curated by labelers, to learn a supervised policy (the SFT model) that generates outputs from a selected list of prompts. 
         - ***Data collection***: A list of prompts is selected and a group of human labelers are asked to write down the expected output response. Two different sources of prompts have been used: some have been prepared directly from the labelers or developers, some have been sampled from OpenAI’s API requests (i.e. from their GPT-3 customers). As this whole process is slow and expensive, the result is a relatively small, high-quality curated dataset (of approximately 12-15k data points, presumably) that is to be used to fine-tune a pretrained language model.
         - ***Model***: Instead of fine-tuning the original GPT-3 model, the developers of ChatGPT opted for a pretrained model in the so-called GPT-3.5 series. Presumably the baseline model used is the latest one text-davinci-003, a GPT-3 model which was fine-tuned mostly on programming code. 
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im53.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im53.png) <br/>
     This supervised learning step suffers from high scalability costs. To overcome this problem, instead of asking human labelers to create a much bigger curated dataset, the strategy is now to have the labelers rank different outputs of the SFT model to create a reward model –let’s explain this in more detail in the following section.
     2. ***Reward Model***: The goal is to learn an objective function (the reward model) directly from the data. The purpose of this function is to give a score to the SFT model outputs, proportional to how desirable these outputs are for humans. In practice, this will strongly reflect the specific preferences of the selected group of human labelers and the common guidelines which they agreed to follow. In the end, this process will extract from the data an automatic system that is supposed to mimic human preferences. Here how it works:
      - A list of prompts is selected and the SFT model generates multiple outputs (anywhere between 4 and 9) for each prompt.
      - Labelers rank the outputs from best to worst. The result is a new labeled dataset, where the rankings are the labels. The size of this dataset is approximately 10 times bigger than the curated dataset used for the SFT model.
      - This new data is used to train a reward model (RM). This model takes as input a few of the SFT model outputs and ranks them in order of preference. <br/>
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im54.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im54.png) <br/>
     3. ***Fine-tuning the SFT model via Proximal Policy Optimization (PPO)***: Reinforcement Learning is now applied to fine-tune the SFT policy by letting it optimize the reward model. The specific algorithm used is called Proximal Policy Optimization (PPO) and the fine-tuned model is referred to as the PPO model. In this step, the PPO model is initialized from the SFT model, and the value function is initialized from the reward model. The environment is a bandit environment which presents a random prompt and expects a response to the prompt. Given the prompt and response, it produces a reward (determined by the reward model) and the episode ends. A per-token KL penalty is added from the SFT model at each token to mitigate over optimization of the reward model. <br/>
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im55.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im55.png) <br/>
 - References:
     - https://www.assemblyai.com/blog/how-chatgpt-actually-works/
     - https://arxiv.org/pdf/2203.02155.pdf (instructGPT paper)
@@ -552,9 +552,9 @@ ChatGPT provides a significant improvement over its predecessor GPT-3. Similarly
 
 # Prompt Engineering
 In a traditional supervised learning system for NLP, we take an input x, usually text  and predict an output y based on a model P(y|x;θ). y could be a label, text, or other variety of output. In order to learn the parameters θ of this model, we use a dataset containing pairs of inputs and outputs, and train a model to predict this conditional probability. The main issue with supervised learning is that in order to train a model P(y|x;θ), it is necessary to have supervised data for the task, which for many tasks cannot be found in large amounts. Prompt-based learning methods for NLP attempt to circumvent this issue by instead learning an LM that models the probability P(x;θ) of text x itself and using this probability to predict y, reducing or obviating the need for large supervised datasets.
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im56.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im56.png) <br/>
 - ***Why Prompts***?
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im57.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im57.png) <br/>
 In the standard “pre-training and fine-tuning” paradigm, the gap between the pre-training stage and the downstream task can be significant: the objectives are different, and for the downstream tasks, we usually need to introduce new parameters—for example, for a BERT-large model and a binary classification task, it requires an additional set of 1,024 x 2 parameters. On the other hand, prompting makes it possible for downstream tasks to take the same format as the pre-training objectives, as illustrated in the above figure, and requires no new parameters. For a classification task, we just need to design a template ("It was") and the expected text responses (we call these label words, e.g., "great" for the positive label and "terrible" for the negative label in the figure). By closing the gap between the two stages, deploying the pre-trained models on specific tasks becomes much easier, especially for the few-shot case—when you only have a dozen of training examples for a new task, it is hard to fine-tune the pre-trained models and the new task-specific parameters effectively, but the process is much smoother with prompting.
 - ***Prompt designing***: Following are the key concepts and consideration when designing the prompt:
     - ***Defining the task***: Before creating prompts, it's important to have a clear understanding of the task the model will be used for and the types of inputs it will need to handle. For example, if the model will be used in a chatbot, the prompts will need to be written in a conversational style, whereas if the model will be used for sentiment analysis, the prompts will need to be written in a way that clearly conveys the sentiment of the text.
@@ -572,16 +572,16 @@ In the standard “pre-training and fine-tuning” paradigm, the gap between the
 - ***Pre-training Objective***: There are three generic objectives used for pre-training language models: sequence-to-sequence transduction, autoregression and auto-encoding. All of them require the model to master broad linguistic knowledge. <br/>
 The original task addressed by the encoder-decoder architecture as well as the Transformer model is sequence-to-sequence transduction: a sequence is transduced into a sequence in a different representation framework. The classical sequence-to-sequence task is machine translation, but other tasks such as summarisation are frequently formulated in this manner. An example of sequence-to-sequence LLMs is the BART family. <br/>
 The second task is autoregression(AR), which is also the original language modelling objective. In autoregression, the model learns to predict the next output (token) based on previous tokens. The learning signal is restricted by the unidirectionality of the enterprise — the model can only use information from the right or from the left of the predicted token. This is a major limitation since words can depend both on past as well as on future positions. As an example, consider how the verb written impacts the following sentence in both directions: <br/>
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im58.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im58.png) <br/>
 Here, the position of paper is restricted to something that is writable, while the position of student is restricted to a human or, anyway, another intelligent entity capable of writing. Many of the LLMs making today’s headlines are autoregressive, incl. the GPT family, PaLM and BLOOM. <br/>
 The third task — auto-encoding(AE) — solves the issue of unidirectionality. Auto-encoding is very similar to the learning of classical word embeddings. First, we corrupt the training data by hiding a certain portion of tokens — typically 10–20% — in the input. The model then learns to reconstruct the correct inputs based on the surrounding context, taking into account both the preceding and the following tokens. The typical example of auto-encoders is the BERT family, where BERT stands for Bidirectional Encoder Representations from Transformers. <br/>
 
 The pre-training objective provides an important hint: autoregressive models perform well on text generation tasks such as conversational AI, question answering and text summarisation, while auto-encoders excel at “understanding” and structuring language, for example for sentiment analysis and various information extraction tasks. Models intended for zero-shot learning can theoretically perform all kinds of tasks as long as they receive appropriate prompts — however, their accuracy is generally lower than that of fine-tuned models. <br/>
 To make things more concrete, the following chart shows how popular NLP tasks are associated with prominent language models in the NLP literature. The associations are computed based on multiple similarity and aggregation metrics, incl. embedding similarity and distance-weighted co-occurrence. Model-task pairs with higher scores, such as BART / Text Summarization and LaMDA / Conversational AI, indicate a good fit based on historical data.
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im59.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im59.png) <br/>
 
 The following table provides a summary of the key features for the most popular LLMs: <br/>
-![](https://github.com/tikna123/natural-language-processing/blob/main/images/im60.png) <br/>
+![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im60.png) <br/>
 Below are some general guidelines for the selection and deployment of LLMs:
  1. When evaluating potential models, be clear about where you are in your AI journey:
     - At the beginning, it might be a good idea to experiment with LLMs deployed via cloud APIs.
