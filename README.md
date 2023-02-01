@@ -63,7 +63,7 @@ This repository contains the details and references for all NLP topics. Below is
         $$score(l/s) =\sum_{j=1}^m \sum_{i=1}^n λ_jf_j(s,i,l_i,l_{i-1})$$  <br/>
         (The first sum runs over each feature function j, and the inner sum runs over each position i of the sentence.) <br/>
         Finally, we can transform these scores into probabilities p(l|s) between 0 and 1 by exponentiating and normalizing:
-    ![](https://github.com/tikna123/natural-language-processing/main/images1/im1.PNG) <br/>
+    ![](https://github.com/tikna123/natural-language-processing/blob/main/images1/im1.PNG) <br/>
 
     * ***Example Feature Functions*** <br/>
     So what do these feature functions look like? Examples of POS tagging features could include:
